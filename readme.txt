@@ -6,10 +6,10 @@ Requires at least: 3.0
 Tested up to: 3.1.3
 Stable tag: 1.0
 
-ShareYourCart™ helps you get more customers by motivating satisfied customers to talk with their friends about your products. 
+[ShareYourCart™](http://www.shareyourcart.com/ "Share your cart on social media like facebook and twitter") helps you get more customers by motivating satisfied customers to talk with their friends about your products. 
 
 == Description ==
-ShareYourCart™ enables owners to reward their customers for spreading the word about their products / services to their friends, by offering them a coupon code for their purchases, thus helping increase sales conversion
+[ShareYourCart](http://www.shareyourcart.com/ "Share your cart on social media like facebook and twitter") enables owners to reward their customers for spreading the word about their products / services to their friends, by offering them a coupon code for their purchases, thus helping increase sales conversion
 
 You can choose how much of a discount to give (in fixed amount, percentage, or free shipping) and to which social media channels it should it be applied. You can also define what the advertisement should say, so that it fully benefits your sales.
 
@@ -23,11 +23,11 @@ The button is currently compatible with the WP e-Commerce v3.7 and above as well
 It's that easy!
 
 == Frequently Asked Questions ==
-Please check out our forum at http://shareyourcart.uservoice.com
+Please check out our [support forums](http://shareyourcart.uservoice.com "ShareYourCart Support Forums")
 
 == Screenshots ==
 
-1. The ShareYourCart™ button will appear on your website
+1. The [ShareYourCart](http://www.shareyourcart.com/ "Share your cart on social media like facebook and twitter") button will appear on your website
 
 2. By clicking the button, the customer can choose what type of social media channel to spread the word through. You can adjust the discount (in fixed amount, percentage, or free shipping) as well as how much should be given for each channel. The most important feature is the *message* sent, which you can easilly change to benefit your sales efforts
 
