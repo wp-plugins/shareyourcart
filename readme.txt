@@ -1,4 +1,4 @@
-=== ShareYourCart™ ===
+=== ShareYourCart™ - WP e-Commerce / eShop plugin ===
 Contributors: barandisolutions
 Donate link: http://www.shareyourcart.com/
 Tags: twitter, Facebook, tweet, affiliate, button, social, discount, coupon
@@ -14,7 +14,7 @@ ShareYourCart™ enables owners to reward their customers for spreading the word a
 You can choose how much of a discount to give (in fixed amount, percentage, or free shipping) and to which social media channels it should it be applied. You can also define what the advertisement should say, so that it fully benefits your sales.
 
 = Compatibility =
-The button is currently compatible with the WP e-Commerce v3.7 and above
+The button is currently compatible with the WP e-Commerce v3.7 and above as well as eShop v6.2.8 and above
 
 == Installation ==
 1. Upload the folder 'shareyourcart' to the '/wp-content/plugins/' directory
