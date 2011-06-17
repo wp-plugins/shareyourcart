@@ -6,7 +6,7 @@ Requires at least: 3.0
 Tested up to: 3.1.3
 Stable tag: 1.0
 
-[ShareYourCart™](http://www.shareyourcart.com/ "Share your cart on social media like facebook and twitter") helps you get more customers by motivating satisfied customers to talk with their friends about your products. 
+ShareYourCart™ helps you get more customers by motivating satisfied customers to talk with their friends about your products. 
 
 == Description ==
 [ShareYourCart](http://www.shareyourcart.com/ "Share your cart on social media like facebook and twitter") enables owners to reward their customers for spreading the word about their products / services to their friends, by offering them a coupon code for their purchases, thus helping increase sales conversion
@@ -39,3 +39,6 @@ Thus, you can focus on further building your business, and not on generating cou
 == Changelog ==
 = 1.0 =
 First Release
+
+== Upgrade Notice ==
+There are no known issues when upgrading
