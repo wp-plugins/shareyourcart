@@ -27,9 +27,11 @@ Please check out our forum at http://shareyourcart.uservoice.com
 
 == Screenshots ==
 
-1. The ShareYourCart™ button will appear on your website screenshot-1.png
-2. By clicking the button, the customer can choose what type of social media channel to spread the word through. You can adjust the discount (in fixed amount, percentage, or free shipping) as well as how much should be given for each channel. The most important feature is the *message* sent, which you can easilly change to benefit your sales efforts. screenshot-2.png
-3. After succesfully spreading the word about your product / service, the customer will receive a coupon screenshot-3.png which he can apply to his cart. 
+1. The ShareYourCart™ button will appear on your website
+
+2. By clicking the button, the customer can choose what type of social media channel to spread the word through. You can adjust the discount (in fixed amount, percentage, or free shipping) as well as how much should be given for each channel. The most important feature is the *message* sent, which you can easilly change to benefit your sales efforts
+
+3. The customer will receive a coupon which he can apply to his cart 
 
 And the best thing is the entire process is automatic, and it simply works.
 Thus, you can focus on further building your business, and not on generating coupon codes.
