@@ -22,10 +22,10 @@ The button is currently compatible with the WP e-Commerce v3.7 and above as well
 
 It's that easy!
 
-== FAQ ==
+== Frequently Asked Questions ==
 Please check out our forum at http://shareyourcart.uservoice.com
 
-== Screenshoots ==
+== Screenshots ==
 
 1. The ShareYourCart™ button will appear on your website screenshot-1.png
 2. By clicking the button, the customer can choose what type of social media channel to spread the word through. You can adjust the discount (in fixed amount, percentage, or free shipping) as well as how much should be given for each channel. The most important feature is the *message* sent, which you can easilly change to benefit your sales efforts. screenshot-2.png
