@@ -1,7 +1,5 @@
 <?php 
-    global $SHAREYOURCART_API; 
-	
-    $plugin_path = get_bloginfo('wpurl') . '/wp-content/plugins/shareyourcart/';
+    global $SHAREYOURCART_API, $plugin_path;
     
     $style_file = $plugin_path . 'style.css';
     $ie_style_file = $plugin_path . 'ie.css';

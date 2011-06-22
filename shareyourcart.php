@@ -29,7 +29,7 @@ require_once(dirname(__FILE__).'/shareyourcart-sdk.php');
 
 global $shareyourcart_secret_key, $shareyourcart_db_version, $plugin_path;
 
-$plugin_path = get_bloginfo('wpurl') . '/wp-content/plugins/shareyourcart/';
+$plugin_path = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
 
 $activation_status = FALSE;
 $shareyourcart_db_version = "1.0";
@@ -39,8 +39,8 @@ $VERTICAL_BUTTON_NORMAL = "vertical";
 $VERTICAL_BUTTON_LEFT = "vertical-left";
 
 //hook the actions
-add_action('activate_shareyourcart/shareyourcart.php', 'shareyourcart_activate');
-add_action('deactivate_shareyourcart/shareyourcart.php', 'shareyourcart_deactivate');
+add_action('activate_'.plugin_basename(__FILE__), 'shareyourcart_activate');
+add_action('deactivate_'.plugin_basename(__FILE__), 'shareyourcart_deactivate');
 add_action('wp_print_styles', 'add_shareyourcart_style');
 add_action('admin_init', 'shareyourcart_admin_init' );
 add_action('admin_menu', 'shareyourcart_menu');
@@ -171,7 +171,7 @@ function shareyourcart_shortcodes_page()
 
 //function called at the plug-in activation
 function shareyourcart_activate() 
-{        
+{
     global $wpdb, $shareyourcart_db_version, $shareyourcart_secret_key, $activation_status;
 
     //get the plug-in version
@@ -186,7 +186,7 @@ function shareyourcart_activate()
     $coupons_table = $wpdb->base_prefix.'shareyourcart_coupons';
 
     //if the plug-in is already installed
-    if($installed_ver == "1.0")
+    if($installed_ver == $shareyourcart_db_version)
     {                     
         //get the app_key and client_id
         $settings = $wpdb->get_row("SELECT app_key, client_id FROM ".$wpdb->base_prefix."shareyourcart_settings LIMIT 1");    
@@ -265,7 +265,8 @@ function shareyourcart_deactivate()
 
 //TODO: comment this
 function add_shareyourcart_style() {
-    $style_file = WP_PLUGIN_URL . '/wp-content/plugins/shareyourcart/style.css';
+    global $plugin_path;
+    $style_file = $plugin_path.'style.css';
 
     if (file_exists($style_file)) {
         wp_register_style('shareyourcart_stylesheet', $style_file);
