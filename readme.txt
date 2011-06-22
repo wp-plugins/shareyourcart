@@ -4,7 +4,7 @@ Donate link: http://www.shareyourcart.com/
 Tags: twitter, Facebook, tweet, affiliate, button, social, discount, coupon
 Requires at least: 3.0
 Tested up to: 3.1.3
-Stable tag: 1.2.2
+Stable tag: 1.2.4
 
 ShareYourCart™ helps you get more customers by motivating satisfied customers to talk with their friends about your products. 
 
@@ -37,6 +37,12 @@ And the best thing is the entire process is automatic, and it simply works.
 Thus, you can focus on further building your business, and not on generating coupon codes.
 
 == Changelog ==
+= 1.2.4 =
+* NEW: button now appears automatically on product pages
+
+= 1.2.3 =
+* Fixed plugin folder naming issue
+
 = 1.2.2 =
 * Improved shortcode documentation
 
