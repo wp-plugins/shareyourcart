@@ -207,10 +207,10 @@ function shareyourcart_wp_e_commerce_coupon(){
 
 //called for product / products pages
 function shareyourcart_wp_e_commerce_products_page()
-{ 
+{
 	//do not display the button if we are on the 
 	//product list page
-	if(wpsc_is_single_product())   //TODO: this is not valid here, because is outside of the loop
+	if(shareyourcart_wpsc_is_single_product())
 	{
 		echo shareyourcart_wp_e_commerce_getButton();
 	}
@@ -234,9 +234,9 @@ function shareyourcart_wp_e_commerce_getButton($product_id = null)
 	//get the app key, client id and build the shopping cart url( from the settings table )
 	$settings = $wpdb->get_row("SELECT * FROM ".$wpdb->base_prefix."shareyourcart_settings LIMIT 1");
 	$client_id = $settings->client_id;
-		
+
 	//check if the product has not been set and we are on the product page
-	if(!isset($product_id) && wpsc_is_single_product())
+	if(!isset($product_id) && shareyourcart_wpsc_is_single_product())
 	{
 		//set the product id
 		$product_id = wpsc_the_product_id();
@@ -248,5 +248,12 @@ function shareyourcart_wp_e_commerce_getButton($product_id = null)
         include(dirname(__FILE__).'/views/wp-e-commerce_view.php');
 	
 	return ob_get_clean();
+}
+
+//wpsc_is_single_product() does not really work, so we need to use our own
+function shareyourcart_wpsc_is_single_product()
+{
+	global $wp_query;
+	return 'wpsc-product' == $wp_query->post->post_type && $wp_query->post_count == 1 ;
 }
 ?>
