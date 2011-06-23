@@ -229,7 +229,7 @@ function shareyourcart_wp_e_commerce_button_shortcode()
 */
 function shareyourcart_wp_e_commerce_getButton($product_id = null)
 {
-	global $wpdb;
+	global $wpdb, $wp_query;
 	
 	//get the app key, client id and build the shopping cart url( from the settings table )
 	$settings = $wpdb->get_row("SELECT * FROM ".$wpdb->base_prefix."shareyourcart_settings LIMIT 1");
@@ -239,7 +239,7 @@ function shareyourcart_wp_e_commerce_getButton($product_id = null)
 	if(!isset($product_id) && shareyourcart_wpsc_is_single_product())
 	{
 		//set the product id
-		$product_id = wpsc_the_product_id();
+		$product_id = $wp_query->post->ID;
 	}
 	
 	ob_start();
