@@ -15,7 +15,7 @@ global  $SHAREYOURCART_API,
         $SHAREYOURCART_API_VALIDATE,
 		$SHAREYOURCART_CONFIGURE;
 
-$SHAREYOURCART_API = 'https://www.shareyourcart.com';
+$SHAREYOURCART_API = (isset($_SERVER['HTTPS']) && !strcasecmp($_SERVER['HTTPS'],'on') ? 'https://' : 'http://').'www.shareyourcart.com';
 $SHAREYOURCART_API_REGISTER = $SHAREYOURCART_API.'/account/create';
 $SHAREYOURCART_API_RECOVER = $SHAREYOURCART_API.'/account/recover';
 $SHAREYOURCART_API_ACTIVATE = $SHAREYOURCART_API.'/account/activate';
