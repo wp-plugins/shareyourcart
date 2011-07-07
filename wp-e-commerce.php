@@ -67,7 +67,7 @@ function shareyourcart_wp_e_commerce() {
 		"item_url" => wpsc_cart_item_url(),
 		"item_price" => function_exists('wpsc_cart_single_item_price') ? wpsc_cart_single_item_price() : wpsc_cart_item_price(),
 		"item_description" => '', //TODO: find a way to get the product description. wpsc_the_product_description() won't work as wpsc_cart_item_product_id() can return the variation id, which does not have a description
-		"item_picture_url" => wpsc_cart_item_image(96,96),
+		"item_picture_url" => rel2abs(wpsc_cart_item_image(90,90),get_bloginfo('wpurl')),
 		);
 		
 		endwhile; //cart loop
