@@ -17,9 +17,9 @@ function shareyourcart_wp_e_commerce_init()
 {
 	/**** CHECKOUT PAGE *****/
 	if(version_compare(WPSC_VERSION,'3.8') >= 0)
-		add_action('wpsc_before_shipping_of_shopping_cart', 'shareyourcart_wp_e_commerce_button_shortcode');  //wp e-commerce v3.8+
+	add_action('wpsc_before_shipping_of_shopping_cart', 'shareyourcart_wp_e_commerce_button_shortcode');  //wp e-commerce v3.8+
 	else
-		add_action('wpsc_before_form_of_shopping_cart', 'shareyourcart_wp_e_commerce_button_shortcode'); //wp e-commerce v3.7
+	add_action('wpsc_before_form_of_shopping_cart', 'shareyourcart_wp_e_commerce_button_shortcode'); //wp e-commerce v3.7
 
 	/**** PRODUCT PAGE ******/
 	add_action('wpsc_top_of_products_page', 'shareyourcart_wp_e_commerce_products_page'); //wp e-commerce v3.7+
@@ -62,34 +62,13 @@ function shareyourcart_wp_e_commerce() {
 		//add the cart items to the arguments
 		while (wpsc_have_cart_items()) : wpsc_the_cart_item();
 
-		//load the product from db, in order to obtain the description / picture	
-		if(version_compare(WPSC_VERSION,'3.8') >= 0)
-		{	
-			global $wp_query;
-			$wp_query = new WP_Query(array(
-			'post_type' => 'wpsc-product',
-			'p'  => wpsc_cart_item_product_id(),
-			)); 
-		}
-		elseif (version_compare(WPSC_VERSION,'3.7') >= 0)
-		{			
-			global $wpsc_query;
-			$wpsc_query = new WPSC_Query(array(
-			'product_id'  => wpsc_cart_item_product_id(),
-			)); 
-		}
-		
-		while (wpsc_have_products()) : wpsc_the_product();
-		
 		$params['cart'][] = array(
 		"item_name" => wpsc_cart_item_name(),
 		"item_url" => wpsc_cart_item_url(),
 		"item_price" => function_exists('wpsc_cart_single_item_price') ? wpsc_cart_single_item_price() : wpsc_cart_item_price(),
-		"item_description" => wpsc_the_product_description(),
-		"item_picture_url" => wpsc_the_product_image(),
+		"item_description" => '', //TODO: find a way to get the product description. wpsc_the_product_description() won't work as wpsc_cart_item_product_id() can return the variation id, which does not have a description
+		"item_picture_url" => wpsc_cart_item_image(96,96),
 		);
-		
-		endwhile; //wpsc_query loop
 		
 		endwhile; //cart loop
 	}
@@ -245,7 +224,7 @@ function shareyourcart_wp_e_commerce_getButton($product_id = null)
 	ob_start();
 	
 	//render the view 
-        include(dirname(__FILE__).'/views/wp-e-commerce_view.php');
+	include(dirname(__FILE__).'/views/wp-e-commerce_view.php');
 	
 	return ob_get_clean();
 }

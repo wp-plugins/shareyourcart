@@ -1,10 +1,11 @@
-=== ShareYourCart™ - WP e-Commerce / eShop plugin ===
+=== ShareYourCart for WP e-Commerce and eShop ===
+Plugin Name: ShareYourCart for WP e-Commerce and eShop
 Contributors: barandisolutions
 Donate link: http://www.shareyourcart.com/
 Tags: twitter, Facebook, tweet, affiliate, button, social, discount, coupon
 Requires at least: 3.0
 Tested up to: 3.1.3
-Stable tag: 1.2.4
+Stable tag: 1.2.5
 
 ShareYourCart™ helps you get more customers by motivating satisfied customers to talk with their friends about your products. 
 
@@ -23,7 +24,7 @@ The button is currently compatible with the WP e-Commerce v3.7 and above as well
 It's that easy!
 
 == Frequently Asked Questions ==
-Please check out our [support forums](http://shareyourcart.uservoice.com "ShareYourCart Support Forums")
+Please check out our [support forums](http://shareyourcart.uservoice.com "ShareYourCart Support Forums"). This is also the place where you can submit your suggestions.
 
 == Screenshots ==
 
@@ -37,6 +38,11 @@ And the best thing is the entire process is automatic, and it simply works.
 Thus, you can focus on further building your business, and not on generating coupon codes.
 
 == Changelog ==
+= 1.2.5 =
+* Added support for WP e-commerce product variations. Now the user will share not only the product, but also the selected variation, thus making the message even more personal
+* The ShareYourCart button now uses SSL if the shop uses HTTPS, and normal communication if it uses only HTTP, thus being compatible with the latest Firefox / Chrome security protections
+* Fixed a bug where the ShareYourCart button is not clickable on some themes
+
 = 1.2.4 =
 * NEW: button now appears automatically on product pages
 
@@ -48,6 +54,7 @@ Thus, you can focus on further building your business, and not on generating cou
 
 = 1.2.1 =
 * Fixed Configure button not working
+
 = 1.2 =
 * Made it compatible with the latest ShareYourCart API v1.2
 * NEW: support for users to select exactly which friend to share their cart with, as well as attach a personal message to it
@@ -62,8 +69,8 @@ First Release
 
 == Upgrade Notice ==
 
-== 1.2.1 ==
+= 1.2.1 =
 Uninstall the old plugin and install the new one
 
-= 1.0 - 1.2 ==
+= 1.0 - 1.2 =
 There are no known issues when upgrading
