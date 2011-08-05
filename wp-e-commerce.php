@@ -189,7 +189,7 @@ function shareyourcart_wp_e_commerce_products_page()
 {
 	//do not display the button if we are on the 
 	//product list page
-	if(shareyourcart_wpsc_is_single_product())
+	if(shareyourcart_wpsc_is_single_product()&&!get_option('_shareyourcart_hide_on_product'))
 	{
 		echo shareyourcart_wp_e_commerce_getButton();
 	}
@@ -198,7 +198,10 @@ function shareyourcart_wp_e_commerce_products_page()
 //the button shortcode
 function shareyourcart_wp_e_commerce_button_shortcode()
 {
-	echo shareyourcart_wp_e_commerce_getButton();
+	if(!get_option('_shareyourcart_hide_on_checkout'))
+	{
+		echo shareyourcart_wp_e_commerce_getButton();
+	}
 }
 
 /*

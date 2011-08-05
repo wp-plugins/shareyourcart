@@ -51,6 +51,13 @@
                         </select>                        
                     </td>
                 </tr>
+				<tr>
+                    <th scope="row">Show by default on</th>
+                    <td>
+                            <input name="show_on_product" <?php echo $show_on_product ? 'checked="checked"' : ''; ?>  type='checkbox'>Product page</input>
+                            <input name="show_on_checkout" <?php echo $show_on_checkout ? 'checked="checked"' : ''; ?> type='checkbox'>Checkout page</input>                        
+                    </td>
+                </tr>
             </table>
             <div class="submit"><input type="submit" value="Save"></div> 
             <input type="hidden" name="visual-form" value="visual-form"/>

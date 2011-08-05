@@ -4,7 +4,7 @@
 Plugin Name: ShareYourCart
 Plugin URI: http://www.shareyourcart.com
 Description: ShareYourCart™ helps you get more customers by motivating satisfied customers to talk with their friends about your products.
-Version: 1.2.5
+Version: 1.3
 Author: Barandi Solutions
 Author URI: http://www.barandisolutions.com
 License: GPLv2 or later
@@ -43,6 +43,7 @@ add_action('activate_'.plugin_basename(__FILE__), 'shareyourcart_activate');
 add_action('deactivate_'.plugin_basename(__FILE__), 'shareyourcart_deactivate');
 add_action('wp_print_styles', 'add_shareyourcart_style');
 add_action('admin_init', 'shareyourcart_admin_init' );
+add_action('init', 'shareyourcart_init');
 add_action('admin_menu', 'shareyourcart_menu');
 add_action('wp_ajax_nopriv_shareyourcart_get_settings', 'shareyourcart_get_settings' );
 add_action('wp_ajax_shareyourcart_get_settings', 'shareyourcart_get_settings' );
@@ -50,6 +51,7 @@ add_action('wp_ajax_shareyourcart_get_settings', 'shareyourcart_get_settings' );
 add_action('wp_ajax_nopriv_shareyourcart_call_recovery_api','shareyourcart_call_recovery_api');
 add_action('wp_ajax_shareyourcart_call_recovery_api','shareyourcart_call_recovery_api');
 
+add_action('wp_head', 'shareyourcart_wp_head');
 
 //add a menu page
 function shareyourcart_menu()
@@ -69,8 +71,8 @@ function shareyourcart_menu()
     
     $page = add_submenu_page(
                             basename(__FILE__),
-                            __('Shortcodes'),
-                            __('Shortcodes'),
+                            __('Documentation'),
+                            __('Documentation'),
                             1,
                             'shareyourcart_shortcodes_page',
                             'shareyourcart_shortcodes_page'
@@ -108,19 +110,21 @@ function shareyourcart_options()
         {                
             $button_skin = $_POST['button_skin'];             
             $button_position = $_POST['button_position'];
+			$hide_on_checkout = empty($_POST['show_on_checkout']);
+			$hide_on_product = empty($_POST['show_on_product']);
             
             //set the button skin
-            if(!get_option('_shareyourcart_button_skin'))
-                add_option('_shareyourcart_button_skin',$button_skin,'','yes');
-            else
-                update_option('_shareyourcart_button_skin',$button_skin);
+            update_option('_shareyourcart_button_skin',$button_skin);
             
             //set the button position
-            if(!get_option('_shareyourcart_button_position'))
-                add_option('_shareyourcart_button_position',$button_position,'','yes');
-            else
-                update_option('_shareyourcart_button_position',$button_position);            
+            update_option('_shareyourcart_button_position',$button_position); 
 
+			//set the show
+			update_option('_shareyourcart_hide_on_product',$hide_on_product);
+				
+			//set the show'
+			update_option('_shareyourcart_hide_on_checkout',$hide_on_checkout);
+				
             $status_message = '<div class="updated settings-error"><p><strong>Button settings successfully updated.</strong></p></div>';
         }
         //if account settings are submitted
@@ -159,12 +163,24 @@ function shareyourcart_options()
     $settings = $wpdb->get_row("SELECT * FROM ".$wpdb->base_prefix."shareyourcart_settings LIMIT 1");
     $current_skin = get_option('_shareyourcart_button_skin');   
     $current_position = get_option('_shareyourcart_button_position');
+	$show_on_checkout = !get_option('_shareyourcart_hide_on_checkout');
+	$show_on_product = !get_option('_shareyourcart_hide_on_product');
     include('views/shareyourcart-options.php');
 }
 
 function shareyourcart_shortcodes_page()
 {
     global $plugin_path;  
+	
+	$action_url = admin_url()."admin-ajax.php?action=";
+	
+	if(shareyourcart_wp_e_commerce_is_active())
+		$action_url.='shareyourcart_wp_e_commerce';
+	else if (shareyourcart_eShop_is_active())
+		$action_url.='shareyourcart_eshop';
+	else
+		$action_url = null;
+	
     include('views/shortcodes.php');
     
 }
@@ -402,6 +418,22 @@ function shareyourcart_button()
 add_shortcode('shareyourcart','shareyourcart_button');
 add_shortcode('shareyourcart_button','shareyourcart_button');
 
+function shareyourcart_init()
+{
+	global  $SHAREYOURCART_API;
+	wp_enqueue_script('shareyourcart_js_sdk', 'http://shareyourcart.barandisolutions.ro/js/test.js',array('jquery'));
+}
+
+//add any elements required to the head area
+function shareyourcart_wp_head()
+{
+	global $wpdb;
+	
+	//get the  client id ( from the database )
+    $settings = $wpdb->get_row("SELECT client_id FROM ".$wpdb->base_prefix."shareyourcart_settings LIMIT 1");
+		
+	echo "<meta property=\"shareyourcart:client_id\" content=\"$settings->client_id\" />";
+}
 
 function rel2abs($rel, $base)
 {

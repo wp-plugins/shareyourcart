@@ -226,7 +226,7 @@ function shareyourcart_eshop_show_checkout($atts, $content = ''){
 	$output = '';
 	
 	//if there is at least an item in the cart
-	if(!empty($_SESSION['eshopcart'.$blog_id]))
+	if(!empty($_SESSION['eshopcart'.$blog_id])&&!get_option('_shareyourcart_hide_on_checkout'))
 	{
 		$output = shareyourcart_eshop_getButton();
 	}
@@ -245,7 +245,7 @@ function shareyourcart_eshop_show_cart($atts, $content = ''){
 	$output = '';
 	
 	//if there is at least an item in the cart
-	if(!empty($_SESSION['eshopcart'.$blog_id]))
+	if(!empty($_SESSION['eshopcart'.$blog_id])&&!get_option('_shareyourcart_hide_on_checkout'))
 	{
 		$output = shareyourcart_eshop_getButton();
 	}
