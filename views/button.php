@@ -15,7 +15,7 @@
 <![endif]-->
 
 <div class="shareyourcart-button <?php echo ( $use_iframe ? 'button_iframe' : 'button_iframe-normal');?>" 
-<?php if(isset($callback_url) && !empty($callback_url): ?>
+<?php if(isset($callback_url) && !empty($callback_url)): ?>
 syc:callback_url="<?php echo $callback_url; ?>"
 <?php endif; ?> 
 syc:skin="<?php echo $button_skin;?>" 

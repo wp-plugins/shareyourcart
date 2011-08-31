@@ -274,12 +274,6 @@ function shareyourcart_eshop_getButton($product_id = null)
 {
 	global $wpdb, $post;
 	
-	//get the app key, client id and build the shopping cart url( from the settings table )
-	$settings = $wpdb->get_row("SELECT * FROM ".$wpdb->base_prefix."shareyourcart_settings LIMIT 1");
-	$client_id = $settings->client_id;
-	
-	$button_position = get_option('_shareyourcart_button_position');
-	
 	//check if the product has not been set 
 	if(!isset($product_id))
 	{
@@ -292,8 +286,11 @@ function shareyourcart_eshop_getButton($product_id = null)
 		}
 	}
 	
+	//the callback url from WP E-Commerce that will be called once the button is pressed
+	$callback_url = get_bloginfo('wpurl').'/wp-admin/admin-ajax.php?action=shareyourcart_eshop&'.(isset($product_id) ? 'p='.$product_id : null);
+	
 	//render the view
 	ob_start(); 
-	include(dirname(__FILE__).'/views/eshop_view.php');
+	include(dirname(__FILE__).'/views/button.php');
 	return ob_get_clean();
 }

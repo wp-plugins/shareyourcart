@@ -211,24 +211,21 @@ function shareyourcart_wp_e_commerce_button_shortcode()
 */
 function shareyourcart_wp_e_commerce_getButton($product_id = null)
 {
-	global $wpdb, $wp_query;
+	global $wp_query;
 	
-	//get the app key, client id and build the shopping cart url( from the settings table )
-	$settings = $wpdb->get_row("SELECT * FROM ".$wpdb->base_prefix."shareyourcart_settings LIMIT 1");
-	$client_id = $settings->client_id;
-
 	//check if the product has not been set and we are on the product page
 	if(!isset($product_id) && shareyourcart_wpsc_is_single_product())
 	{
 		//set the product id
 		$product_id = $wp_query->post->ID;
 	}
-	
-	ob_start();
+
+	//the callback url from WP E-Commerce that will be called once the button is pressed
+	$callback_url = get_bloginfo('wpurl').'/wp-admin/admin-ajax.php?action=shareyourcart_wp_e_commerce&'.(isset($product_id) ? 'p='.$product_id : null);
 	
 	//render the view 
-	include(dirname(__FILE__).'/views/wp-e-commerce_view.php');
-	
+	ob_start();
+	include(dirname(__FILE__).'/views/button.php');
 	return ob_get_clean();
 }
 

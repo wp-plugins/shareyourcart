@@ -412,6 +412,13 @@ function shareyourcart_button()
 		$button=shareyourcart_wp_e_commerce_getButton();
 	else if (shareyourcart_eShop_is_active())
 		$button=shareyourcart_eshop_getButton();
+	else
+	{
+		//render the generic button ( without a callback )
+		ob_start(); 
+		include(dirname(__FILE__).'/views/button.php');
+		$button = ob_get_clean();
+	}
 		
     return $button;   
 }
