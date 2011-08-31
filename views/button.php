@@ -1,6 +1,6 @@
 <?php 
-    global $SHAREYOURCART_API, $plugin_path; 
-	    
+    global $SHAREYOURCART_API, $plugin_path;
+    
     $style_file = $plugin_path . 'style.css';
     $ie_style_file = $plugin_path . 'ie.css';
     
@@ -15,7 +15,9 @@
 <![endif]-->
 
 <div class="shareyourcart-button <?php echo ( $use_iframe ? 'button_iframe' : 'button_iframe-normal');?>" 
-syc:callback_url="<?php echo bloginfo('wpurl').'/wp-admin/admin-ajax.php?&action=shareyourcart_eshop&'.(isset($product_id) ? 'p='.$product_id : null) ?>" 
+<?php if(isset($callback_url) && !empty($callback_url): ?>
+syc:callback_url="<?php echo $callback_url; ?>"
+<?php endif; ?> 
 syc:skin="<?php echo $button_skin;?>" 
 syc:orientation="<?php echo $button_position; ?>" 
 ></div>
