@@ -73,7 +73,6 @@ function shareyourcart_startSessionAPI($params)
         else
         {
                 //show the raw response received ( for debug purposes )
-                header("HTTP/1.0 403");
                 print_r($response);
                 exit;
         }
@@ -133,7 +132,7 @@ function shareyourcart_ensureCouponIsValidAPI()
         if(!isset($results['valid']) || !$results['valid'])
         {
                 header("HTTP/1.0 403");
-                //print_r($response);
+                print_r($response);
                 exit;
         }
 }

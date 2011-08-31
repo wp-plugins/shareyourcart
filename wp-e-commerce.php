@@ -95,7 +95,7 @@ function shareyourcart_wp_e_commerce() {
 		while (wpsc_have_products()) : wpsc_the_product();
 		$params['cart'][] = array(
 		"item_name" => wpsc_the_product_title(),
-		"item_description" => wpsc_the_product_description(),
+		"item_description" => substr(wpsc_the_product_description(), 0, 255),
 		"item_url" => wpsc_the_product_permalink(),
 		"item_price" => wpsc_the_product_price(), 
 		"item_picture_url" => wpsc_the_product_image(),
