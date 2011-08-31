@@ -14,4 +14,8 @@
 <link rel="stylesheet" href="<?php echo $ie_style_file ; ?>" type="text/css"/>
 <![endif]-->
 
-<iframe src="<?php echo $SHAREYOURCART_API; ?>/button?client_id=<?php echo urlencode($client_id); ?>&callback_url=<?php echo urlencode(bloginfo('wpurl').'/wp-admin/admin-ajax.php?&action=shareyourcart_wp_e_commerce&'.(isset($product_id) ? 'p='.$product_id : null)) ?>&skin=<?php echo $button_skin;  ?>&orientation=<?php echo $button_position; ?>"<?php if($use_iframe) echo 'class="button_iframe"';else echo 'class="button_iframe-normal"';?>frameBorder="0" scrolling="no"></iframe> 
+<div class="shareyourcart-button <?php echo ( $use_iframe ? 'button_iframe' : 'button_iframe-normal');?>" 
+syc:callback_url="<?php echo bloginfo('wpurl').'/wp-admin/admin-ajax.php?&action=shareyourcart_wp_e_commerce&'.(isset($product_id) ? 'p='.$product_id : null) ?>" 
+syc:skin="<?php echo $button_skin;?>" 
+syc:orientation="<?php echo $button_position; ?>" 
+></div>

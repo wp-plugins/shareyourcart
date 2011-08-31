@@ -421,7 +421,7 @@ add_shortcode('shareyourcart_button','shareyourcart_button');
 function shareyourcart_init()
 {
 	global  $SHAREYOURCART_API;
-	wp_enqueue_script('shareyourcart_js_sdk', 'http://shareyourcart.barandisolutions.ro/js/test.js',array('jquery'));
+	wp_enqueue_script('shareyourcart_js_sdk', $SHAREYOURCART_API.'/js/button.js',array('jquery'));
 }
 
 //add any elements required to the head area
@@ -432,7 +432,7 @@ function shareyourcart_wp_head()
 	//get the  client id ( from the database )
     $settings = $wpdb->get_row("SELECT client_id FROM ".$wpdb->base_prefix."shareyourcart_settings LIMIT 1");
 		
-	echo "<meta property=\"shareyourcart:client_id\" content=\"$settings->client_id\" />";
+	echo "<meta property=\"syc:client_id\" content=\"$settings->client_id\" />";
 }
 
 function rel2abs($rel, $base)

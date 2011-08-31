@@ -146,7 +146,7 @@ li#toplevel_page_shareyourcart .wp-menu-toggle{width:0px;}
 .configure-button-container{margin: auto; margin-top: 50px; width: 212px;}
 #button-container{margin: auto; width: 180px;}
 
-.button_iframe
+.button_iframe iframe
 {
     width: 58px;
     height: 230px;
@@ -154,7 +154,7 @@ li#toplevel_page_shareyourcart .wp-menu-toggle{width:0px;}
     top:360px;
     right:0px;
 }
-.button_iframe-normal
+.button_iframe-normal iframe
 {
     float:right;
     height: 58px;
