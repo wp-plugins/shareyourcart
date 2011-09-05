@@ -439,8 +439,56 @@ function shareyourcart_wp_head()
 	//get the  client id ( from the database )
     $settings = $wpdb->get_row("SELECT client_id FROM ".$wpdb->base_prefix."shareyourcart_settings LIMIT 1");
 		
-	echo "<meta property=\"syc:client_id\" content=\"$settings->client_id\" />";
+	echo "<meta property=\"syc:client_id\" content=\"$settings->client_id\" />\n";
+	
+	//if this is a single page, get the data from wordpress
+	if(!shareyourcart_wp_e_commerce_is_active() &&
+		!shareyourcart_eShop_is_active() &&	
+		(is_single() || is_page())) {
+		
+		//get the page/post title
+		$title = the_title('', '', false);
+		if(version_compare(phpversion(),'5.0.0','>=')){
+			$title = html_entity_decode($title,ENT_QUOTES,'UTF-8');
+		} else {
+			$title = html_entity_decode($title,ENT_QUOTES);
+		}
+		
+		//write the meta properties
+		echo '<meta property="og:title" content="'.htmlspecialchars($title).'" />'."\n";
+    	echo '<meta property="og:url" content="'.get_permalink().'" />'."\n";
+		
+		$description = trim(get_the_excerpt());
+		if(!empty($description)){
+		    echo '<meta property="og:description" content="'.htmlspecialchars($description).'" />'."\n";
+		}
+		
+		//if this post has a thumbnail, use it
+		if(has_post_thumbnail()){
+			$image = wp_get_attachment_image_src(get_post_thumbnail_id());
+			echo '<meta property="og:image" content="'.$image[0].'" />'."\n";
+		}
+	}
 }
+
+
+/**
+	*
+	* Ident in HTML. Convert leading spaces to &nbsp;
+	*
+	**/
+function htmlIndent($src)
+{
+	//replace all leading spaces with &nbsp; 
+	//Attention: this will render wrong html if you split a tag on more lines!
+	return preg_replace_callback('/(^|\n)( +)/', function($match){
+		
+		return str_repeat("&nbsp;", strlen($match[0]));
+		
+	}, $src);
+}
+
+
 
 function rel2abs($rel, $base)
 {

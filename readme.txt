@@ -1,5 +1,5 @@
-=== ShareYourCart for WP e-Commerce and eShop ===
-Plugin Name: ShareYourCart for WP e-Commerce and eShop
+=== ShareYourCart for WP e-Commerce, eShop and others ===
+Plugin Name: ShareYourCart for WP e-Commerce, eShop and others
 Contributors: barandisolutions
 Donate link: http://www.shareyourcart.com/
 Tags: twitter, Facebook, tweet, affiliate, button, social, discount, coupon
@@ -15,7 +15,8 @@ ShareYourCart™ helps you get more customers by motivating satisfied customers to
 You can choose how much of a discount to give (in fixed amount, percentage, or free shipping) and to which social media channels it should it be applied. You can also define what the advertisement should say, so that it fully benefits your sales.
 
 = Compatibility =
-The button is currently compatible with the WP e-Commerce v3.7 and above as well as eShop v6.2.8 and above
+The button is currently fully compatible with the WP e-Commerce v3.7 and above as well as eShop v6.2.8 and above.
+For other shopping carts, it will use the lite Javascript code.
 
 == Installation ==
 1. Upload the folder 'shareyourcart' to the '/wp-content/plugins/' directory
@@ -38,6 +39,10 @@ And the best thing is the entire process is automatic, and it simply works.
 Thus, you can focus on further building your business, and not on generating coupon codes.
 
 == Changelog ==
+= 1.3 =
+* Added support for custom buttons that can be styled according to your needs
+* Added support for other shopping cart plugins, not just WP e-commerce or eShop
+
 = 1.2.5 =
 * Added support for WP e-commerce product variations. Now the user will share not only the product, but also the selected variation, thus making the message even more personal
 * The ShareYourCart button now uses SSL if the shop uses HTTPS, and normal communication if it uses only HTTP, thus being compatible with the latest Firefox / Chrome security protections
