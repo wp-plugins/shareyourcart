@@ -77,7 +77,15 @@ function shareyourcart_menu()
                             'shareyourcart_shortcodes_page',
                             'shareyourcart_shortcodes_page'
             );   
-    add_action('admin_print_styles-'.$page,'shareyourcart_admin_styles' );   
+    add_action('admin_print_styles-'.$page,'shareyourcart_admin_styles' );  
+	
+	if(!shareyourcart_is_supported_cart_active())
+	{
+		//Add the meta options to supported
+		add_meta_box( 'shareyourcart_metabox', 'ShareYourCart', 'shareyourcart_metabox', 'post', 'normal', 'high' );
+		add_meta_box( 'shareyourcart_metabox', 'ShareYourCart', 'shareyourcart_metabox', 'page', 'normal', 'high' );
+		add_action( 'save_post', 'shareyourcart_save_post' );
+	}
 }
 
 function shareyourcart_admin_init()
@@ -166,6 +174,63 @@ function shareyourcart_options()
 	$show_on_checkout = !get_option('_shareyourcart_hide_on_checkout');
 	$show_on_product = !get_option('_shareyourcart_hide_on_product');
     include('views/shareyourcart-options.php');
+}
+
+/*****
+*
+* The box that appears on a page/post to allow the admin to enter post details
+*
+*************/
+function shareyourcart_metabox($post)
+{
+	global $plugin_path;
+	
+	$price = get_post_meta( $post->ID , 'syc_price', true );
+	$description = get_post_meta( $post->ID, 'syc_description', true);
+
+	include('views/post-meta.php');
+}
+
+/*****
+*
+* The function called when a post is saved
+*
+***********/
+function shareyourcart_save_post($post_id)
+{ 
+	global $plugin_path;
+	
+	// verify this came from the our screen and with proper authorisation,
+	// because save_post can be triggered at other times		
+	if ( !isset( $_POST['syc_nonce'] ) || !wp_verify_nonce( $_POST['syc_nonce'], $plugin_path )) {
+		return;
+	}
+	
+	if ( 'page' == $_POST['post_type'] ) {
+		if ( !current_user_can( 'edit_page', $post_id ) ) {
+			return;
+		}
+	} else {
+		if ( !current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+	}
+
+	//save the price
+	$price = isset( $_POST['syc_price'] ) ? trim( $_POST['syc_price'] ) : '';
+	if ( $price != '' ) {
+		update_post_meta( $post_id, 'syc_price', $price );
+	} else {
+		delete_post_meta( $post_id, 'syc_price' );
+	}
+	
+	//save the description
+	$description = isset( $_POST['syc_description'] ) ? trim( $_POST['syc_description'] ) : '';
+	if ( $description != '' ) {
+		update_post_meta( $post_id, 'syc_description', $description );
+	} else {
+		delete_post_meta( $post_id, 'syc_description' );
+	}
 }
 
 function shareyourcart_shortcodes_page()
@@ -434,7 +499,7 @@ function shareyourcart_init()
 //add any elements required to the head area
 function shareyourcart_wp_head()
 {
-	global $wpdb;
+	global $wpdb, $post;
 	
 	//get the  client id ( from the database )
     $settings = $wpdb->get_row("SELECT client_id FROM ".$wpdb->base_prefix."shareyourcart_settings LIMIT 1");
@@ -442,8 +507,7 @@ function shareyourcart_wp_head()
 	echo "<meta property=\"syc:client_id\" content=\"$settings->client_id\" />\n";
 	
 	//if this is a single page, get the data from wordpress
-	if(!shareyourcart_wp_e_commerce_is_active() &&
-		!shareyourcart_eShop_is_active() &&	
+	if(!shareyourcart_is_supported_cart_active() &&	
 		(is_single() || is_page())) {
 		
 		//get the page/post title
@@ -458,7 +522,9 @@ function shareyourcart_wp_head()
 		echo '<meta property="og:title" content="'.htmlspecialchars($title).'" />'."\n";
     	echo '<meta property="og:url" content="'.get_permalink().'" />'."\n";
 		
-		$description = trim(get_the_excerpt());
+		//show the description
+		$description = get_post_meta( $post->ID, 'syc_description', true);
+		if(empty($description)) $description = trim(get_the_excerpt());
 		if(!empty($description)){
 		    echo '<meta property="og:description" content="'.htmlspecialchars($description).'" />'."\n";
 		}
@@ -468,9 +534,24 @@ function shareyourcart_wp_head()
 			$image = wp_get_attachment_image_src(get_post_thumbnail_id());
 			echo '<meta property="og:image" content="'.$image[0].'" />'."\n";
 		}
+		
+		//show the price
+		$price = get_post_meta( $post->ID , 'syc_price', true );
+		if(!empty($price)){
+			echo '<meta property="syc:price" content="'.htmlspecialchars($price).'" />'."\n";
+		}
 	}
 }
 
+/***
+*
+* Returns TRUE if there is a supported cart active
+*
+*******/
+function shareyourcart_is_supported_cart_active()
+{
+	return shareyourcart_wp_e_commerce_is_active() || shareyourcart_eShop_is_active();
+}
 
 /**
 	*

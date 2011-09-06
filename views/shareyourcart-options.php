@@ -72,4 +72,8 @@
             <input type="hidden" name="client_id" value="<?php echo $settings->client_id; ?>" />
         </div>
     </form>
+	
+	<h2>Contact</h2>
+	<p>You can find help in our <a href="http://shareyourcart.uservoice.com" target="_blank" title="forum">forum</a>, or if you have a private question, you can <a href="http://www.shareyourcart.com/contact" target="_blank">contact us directly</a></p>
+	<br />
 </div>

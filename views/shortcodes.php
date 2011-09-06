@@ -39,6 +39,7 @@
   ...
 </html>
 '))); ?></code></li>
+		<li>This plugin allows you to easilly set the above meta properties directly in the post or page edit form</li>
 <?php endif; ?>
 
 		<li><p>To position the  <a href="http://www.shareyourcart.com" target="_blank" title="Shareyourcart&trade;">ShareYourCart&trade;</a> button, you need to override the following CSS classes</p>
@@ -69,5 +70,8 @@ if (isset($action_url) && !empty($action_url)){
 		<p>If you want to use the <a href="http://www.shareyourcart.com" target="_blank" title="Shareyourcart&trade;">ShareYourCart&trade;</a> button on a product's page, you need to <strong>append</strong> <code>&p=&lt;product_id&gt;</code> to the <strong>syc:callback_url</strong> value, where <code>&lt;product_id&gt;</code> is the product's id</p>
 <?php endif; ?>
 
+		<h2>Contact</h2>
+		<p>You can find help in our <a href="http://shareyourcart.uservoice.com" target="_blank" title="forum">forum</a>, or if you have a private question, you can <a href="http://www.shareyourcart.com/contact" target="_blank">contact us directly</a></p>
+		<br />
 	</div>
 </div>
