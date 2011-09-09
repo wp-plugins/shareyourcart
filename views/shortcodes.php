@@ -53,11 +53,11 @@
 		<h2>Custom Button</h2>
 		<p>If you want to fully style the  <a href="http://www.shareyourcart.com" target="_blank" title="Shareyourcart&trade;">ShareYourCart&trade;</a> button, use instead the following HTML code</p>
 
-<?php $custom_button = '<button class="shareyourcart-button" syc:layout="custom"';
+<?php $custom_button = '<button class="shareyourcart-button" data-syc-layout="custom"';
 if (isset($action_url) && !empty($action_url)){	
 	//if there is no action url, it means none of the supported shopping carts are active,
 	//so there would be no need for the callback attribute
-	$custom_button .= ' syc:callback_url="'.$action_url.'" ';
+	$custom_button .= ' data-syc-callback_url="'.$action_url.'" ';
  }
  
  $custom_button .= '>
@@ -67,7 +67,7 @@ if (isset($action_url) && !empty($action_url)){
 		
 <?php if (isset($action_url) && !empty($action_url)): //only show if a known shopping cart is active ?>
 		<h3>Remarks</h3>
-		<p>If you want to use the <a href="http://www.shareyourcart.com" target="_blank" title="Shareyourcart&trade;">ShareYourCart&trade;</a> button on a product's page, you need to <strong>append</strong> <code>&p=&lt;product_id&gt;</code> to the <strong>syc:callback_url</strong> value, where <code>&lt;product_id&gt;</code> is the product's id</p>
+		<p>If you want to use the <a href="http://www.shareyourcart.com" target="_blank" title="Shareyourcart&trade;">ShareYourCart&trade;</a> button on a product's page, you need to <strong>append</strong> <code>&p=&lt;product_id&gt;</code> to the <strong>data-syc-callback_url</strong> value, where <code>&lt;product_id&gt;</code> is the product's id</p>
 <?php endif; ?>
 
 		<h2>Contact</h2>
