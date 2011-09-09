@@ -119,17 +119,17 @@ function shareyourcart_ensureCouponIsValidAPI()
         curl_close($session);
         
         //if the operation was not succesfull, print the error
-        if($httpCode != 200)
-        {
+		if($httpCode != 200)
+		{
                 header("HTTP/1.0 403");
 				print_r($response);
                 exit;
-        }
+		}
         
         $results = json_decode($response,true);    
 
         //if the result is not valid, print it
-        if(!isset($results['valid']) || !$results['valid'])
+        if(!isset($results['valid']) || !($results['valid']===true))
         {
                 header("HTTP/1.0 403");
                 print_r($response);
