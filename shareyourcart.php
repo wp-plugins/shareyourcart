@@ -4,7 +4,7 @@
 Plugin Name: ShareYourCart
 Plugin URI: http://www.shareyourcart.com
 Description: ShareYourCart™ helps you get more customers by motivating satisfied customers to talk with their friends about your products.
-Version: 1.3
+Version: 1.3.1
 Author: Barandi Solutions
 Author URI: http://www.barandisolutions.com
 License: GPLv2 or later
@@ -562,11 +562,11 @@ function htmlIndent($src)
 {
 	//replace all leading spaces with &nbsp; 
 	//Attention: this will render wrong html if you split a tag on more lines!
-	return preg_replace_callback('/(^|\n)( +)/', function($match){
+	return preg_replace_callback('/(^|\n)( +)/', create_function('$match',
 		
-		return str_repeat("&nbsp;", strlen($match[0]));
+		'return str_repeat("&nbsp;", strlen($match[0]));'
 		
-	}, $src);
+	), $src);
 }
 
 

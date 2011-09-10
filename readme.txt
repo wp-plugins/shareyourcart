@@ -5,7 +5,7 @@ Donate link: http://www.shareyourcart.com/
 Tags: twitter, Facebook, tweet, affiliate, button, social, discount, coupon
 Requires at least: 3.0
 Tested up to: 3.1.3
-Stable tag: 1.3
+Stable tag: 1.3.1
 
 ShareYourCart™ helps you get more customers by motivating satisfied customers to talk with their friends about your products. 
 
@@ -39,6 +39,9 @@ And the best thing is the entire process is automatic, and it simply works.
 Thus, you can focus on further building your business, and not on generating coupon codes.
 
 == Changelog ==
+= 1.3.1 =
+* Fixed but with older versions of PHP, which do not support inline functions
+
 = 1.3 =
 * Added support for custom buttons that can be styled according to your needs
 * Added support for other shopping cart plugins, not just WP e-commerce or eShop
