@@ -57,18 +57,49 @@ function shareyourcart_estore() {
 	//there is no product set, thus send the products from the shopping cart
 	if(!isset($_REQUEST['p']))
 	{	
-                //$sql  = "SELECT * FROM " . $wpdb->prefix . "posts WHERE id = " . $_REQUEST['p'];
-                //$results = $wpdb->get_results($sql);         
-                //$img = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID));
+                global $wp_query;
+            
+                // Query the database for all posts that contain the Product shortcode
+                $sql  = "SELECT * FROM " . $wpdb->prefix . "posts WHERE post_content LIKE '%[wp_eStore:product_id:%' AND post_status = 'publish'";
+                $results = $wpdb->get_results($sql);    
                 
+                $pattern = '#\[wp_eStore:product_id:.+:end]#';
+          
 		//add the cart items to the arguments
 		foreach ($_SESSION['eStore_cart'] as $item) {
+                       
+                    // Iterates the products to find the one that we need
+                    $j = 0;
+                    for($j = 0; $j < sizeof($results); $j++) {
+
+                        preg_match_all($pattern, $results[$j]->post_content, $matches);
+     
+                        foreach ($matches[0] as $match) {
+                            $pat = '[wp_eStore:product_id:';
+                            $m = str_replace ($pat, '', $match);
+
+                            $pat = ':end]';
+                            $m = str_replace ($pat, '', $m);
+
+                            $pieces = explode('|',$m);
+                            $key = $pieces[0];
+                        }
+                        
+                        if($key == $item['item_number']) break;
+                    }  
+                    
+                    // Get the image of the product
+                    $img = wp_get_attachment_image_src(get_post_thumbnail_id($results[$j]->ID));       
+                    
+                    // Query the database to find the description of the product
+                    $sql2  = "SELECT description FROM " . $wpdb->prefix . "wp_eStore_tbl WHERE id = " . $key;
+                    $results2 = $wpdb->get_results($sql2);	
 
                     $params['cart'][] = array(
                     "item_name" => $item['name'],
-                    "item_url" => $results[0]->guid,
+                    "item_url" => $results[$j]->guid,
                     "item_price" => print_digi_cart_payment_currency($item['price'], WP_ESTORE_CURRENCY_SYMBOL),
-                    "item_description" => $item['description'], 
+                    "item_description" => $results2[0]->description, 
                     "item_picture_url" => !empty($img) ? $img[0] : '',
                     );
 		
@@ -97,6 +128,7 @@ function shareyourcart_estore() {
                     $key = $pieces[0];
                 }
                 
+                // Query the database to find the details of the product
 		$sql2  = "SELECT * FROM " . $wpdb->prefix . "wp_eStore_tbl WHERE id = " . $key;
                 $results2 = $wpdb->get_results($sql2);	
                 
