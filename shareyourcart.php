@@ -243,6 +243,8 @@ function shareyourcart_shortcodes_page()
 		$action_url.='shareyourcart_wp_e_commerce';
 	else if (shareyourcart_eShop_is_active())
 		$action_url.='shareyourcart_eshop';
+        else if (shareyourcart_eStore_is_active())
+                $action_url .= 'shareyourcart_estore';
 	else
 		$action_url = null;
 	
@@ -365,6 +367,7 @@ function shareyourcart_get_settings()
 
 include(dirname(__FILE__).'/wp-e-commerce.php');
 include(dirname(__FILE__).'/eshop.php');
+include(dirname(__FILE__).'/estore.php');
 
 /**
 *
@@ -412,6 +415,7 @@ function shareyourcart_ensureValidCoupon()
         if($tokens==null)
         {
                 header("HTTP/1.0 403");
+                echo "Token not found";
                 exit;
         }	
 
@@ -472,11 +476,16 @@ function shareyourcart_call_recovery_api()
 function shareyourcart_button()
 {
 	$button = "";
+        
+        echo shareyourcart_estore_is_active();
+        die();
 
 	if(shareyourcart_wp_e_commerce_is_active())
 		$button=shareyourcart_wp_e_commerce_getButton();
 	else if (shareyourcart_eShop_is_active())
 		$button=shareyourcart_eshop_getButton();
+        else if (shareyourcart_estore_is_active())
+		$button=shareyourcart_estore_getButton();
 	else
 	{
 		//render the generic button ( without a callback )
@@ -487,6 +496,7 @@ function shareyourcart_button()
 		
     return $button;   
 }
+
 add_shortcode('shareyourcart','shareyourcart_button');
 add_shortcode('shareyourcart_button','shareyourcart_button');
 
@@ -494,6 +504,7 @@ function shareyourcart_init()
 {
 	global  $SHAREYOURCART_API;
 	wp_enqueue_script('shareyourcart_js_sdk', $SHAREYOURCART_API.'/js/button.js',array('jquery'));
+        
 }
 
 //add any elements required to the head area
@@ -502,13 +513,12 @@ function shareyourcart_wp_head()
 	global $wpdb, $post;
 	
 	//get the  client id ( from the database )
-    $settings = $wpdb->get_row("SELECT client_id FROM ".$wpdb->base_prefix."shareyourcart_settings LIMIT 1");
+        $settings = $wpdb->get_row("SELECT client_id FROM ".$wpdb->base_prefix."shareyourcart_settings LIMIT 1");
 		
 	echo "<meta property=\"syc:client_id\" content=\"$settings->client_id\" />\n";
 	
 	//if this is a single page, get the data from wordpress
-	if(!shareyourcart_is_supported_cart_active() &&	
-		(is_single() || is_page())) {
+	if(!shareyourcart_is_supported_cart_active() &&	(is_single() || is_page())) {
 		
 		//get the page/post title
 		$title = the_title('', '', false);
@@ -550,7 +560,7 @@ function shareyourcart_wp_head()
 *******/
 function shareyourcart_is_supported_cart_active()
 {
-	return shareyourcart_wp_e_commerce_is_active() || shareyourcart_eShop_is_active();
+	return shareyourcart_wp_e_commerce_is_active() || shareyourcart_eShop_is_active() || shareyourcart_estore_is_active();
 }
 
 /**

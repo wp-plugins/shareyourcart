@@ -24,6 +24,7 @@ $SHAREYOURCART_API_CREATE = $SHAREYOURCART_API.'/session/create';
 $SHAREYOURCART_API_VALIDATE = $SHAREYOURCART_API.'/session/validate';
 $SHAREYOURCART_CONFIGURE = $SHAREYOURCART_API.'/configure';
 
+
 /**
 *
 *  Start a new session
@@ -46,11 +47,11 @@ function shareyourcart_startSessionAPI($params)
         $response = curl_exec($session);
         $httpCode = curl_getinfo($session, CURLINFO_HTTP_CODE);
         curl_close($session);
-
+        
         //if the operation was not succesfull, print the error
         if($httpCode != 200)
         {
-				print_r($response);
+                print_r($response);
                 exit;
         }
         
@@ -92,6 +93,8 @@ function shareyourcart_ensureCouponIsValidAPI()
         if(!isset($_POST['token'], $_POST['coupon_code'], $_POST['coupon_value'], $_POST['coupon_type']))
         {
                 header("HTTP/1.0 403");
+                echo "At least one of the parameters is missing. Received: ";
+                print_r($_POST);
                 exit;
         }
 
@@ -121,9 +124,9 @@ function shareyourcart_ensureCouponIsValidAPI()
         //if the operation was not succesfull, print the error
 		if($httpCode != 200)
 		{
-                header("HTTP/1.0 403");
-				print_r($response);
-                exit;
+                    header("HTTP/1.0 403");
+                    print_r("sdk.ensureIsValid: ".$response);
+                    exit;
 		}
         
         $results = json_decode($response,true);    
@@ -132,7 +135,7 @@ function shareyourcart_ensureCouponIsValidAPI()
         if(!isset($results['valid']) || !($results['valid']===true))
         {
                 header("HTTP/1.0 403");
-                print_r($response);
+                print_r("sdk.ensureIsValid: ".$response);
                 exit;
         }
 }
