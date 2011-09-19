@@ -476,9 +476,6 @@ function shareyourcart_call_recovery_api()
 function shareyourcart_button()
 {
 	$button = "";
-        
-        echo shareyourcart_estore_is_active();
-        die();
 
 	if(shareyourcart_wp_e_commerce_is_active())
 		$button=shareyourcart_wp_e_commerce_getButton();

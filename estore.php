@@ -17,14 +17,6 @@ function shareyourcart_estore_init()
 {
     
 	/**** CHECKOUT PAGE *****/
-	//add_action('eStore_shopping_cart', 'shareyourcart_estore_button_shortcode');
-        //add_filter('the_content', 'shareyourcart_estore_button_shortcode',12);
-	
-        /**** PRODUCT PAGE ******/
-	//add_action('wp_eStore_add_to_cart', 'shareyourcart_estore_products_page');   
-        //remove_shortcode('wp_eStore_add_to_cart');
-        //add_shortcode('wp_eStore_add_to_cart', 'shareyourcart_estore_products_page');
-        //add_action('wp_footer', 'shareyourcart_estore_button');\
         add_filter('the_content', 'shareyourcart_estore_button', 12);
         
 }
