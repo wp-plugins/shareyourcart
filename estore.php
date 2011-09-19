@@ -57,10 +57,9 @@ function shareyourcart_estore() {
 	//there is no product set, thus send the products from the shopping cart
 	if(!isset($_REQUEST['p']))
 	{	
-                $sql  = "SELECT * FROM " . $wpdb->prefix . "posts WHERE id = " . $_REQUEST['p'];
-                $results = $wpdb->get_results($sql);
-                
-                $img = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID));
+                //$sql  = "SELECT * FROM " . $wpdb->prefix . "posts WHERE id = " . $_REQUEST['p'];
+                //$results = $wpdb->get_results($sql);         
+                //$img = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID));
                 
 		//add the cart items to the arguments
 		foreach ($_SESSION['eStore_cart'] as $item) {
