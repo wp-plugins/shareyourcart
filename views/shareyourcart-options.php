@@ -1,8 +1,10 @@
 <?php global $SHAREYOURCART_CONFIGURE; ?>
 <div class="wrap">
-    <a href="http://www.shareyourcart.com" target="_blank" title="Shareyourcart" class="shareyourcart-logo">
-        <h2><img src="<?php echo $plugin_path.'shareyourcart-logo.png'; ?>"/></h2>
-    </a>
+    <h2>
+        <a href="http://www.shareyourcart.com" target="_blank" title="Shareyourcart" class="shareyourcart-logo">
+            <img src="<?php echo $plugin_path.'shareyourcart-logo.png'; ?>"/>
+        </a>
+    </h2>
 
     
     <?php echo $status_message; ?>
