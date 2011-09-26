@@ -42,28 +42,49 @@ function shareyourcart_estore_is_active()
 **/
 function shareyourcart_estore() {
 
-        global  $blog_id, $eshopoptions, $post, $wpdb;
+    global  $blog_id, $eshopoptions, $post, $wpdb;
     
 	if(!shareyourcart_estore_is_active())
 	exit;
         
 	//specify the parameters
 	$params = array(
-	'callback_url' => get_bloginfo('wpurl').'/wp-admin/admin-ajax.php?action=shareyourcart_estore_coupon',
-	'success_url' => digi_cart_current_page_url(),
-	'cancel_url' => digi_cart_current_page_url(),
+		'callback_url' => get_bloginfo('wpurl').'/wp-admin/admin-ajax.php?action=shareyourcart_estore_coupon',
+		'success_url' => digi_cart_current_page_url(),
+		'cancel_url' => digi_cart_current_page_url(),
 	);
         
 	//there is no product set, thus send the products from the shopping cart
 	if(!isset($_REQUEST['p']))
 	{	
-                global $wp_query;
-            
-                // Query the database for all posts that contain the Product shortcode
-                $sql  = "SELECT * FROM " . $wpdb->prefix . "posts WHERE post_content LIKE '%[wp_eStore:product_id:%' AND post_status = 'publish'";
-                $results = $wpdb->get_results($sql);    
                 
-                $pattern = '#\[wp_eStore:product_id:.+:end]#';
+		global $wp_query;
+            
+        // Query the database for all posts that contain the Product shortcode
+        $sql  = "SELECT * FROM " . $wpdb->prefix . "posts WHERE post_content LIKE '%[wp_eStore:product_id:%' AND post_status = 'publish'";
+        $results = $wpdb->get_results($sql);    
+		$pattern = '#\[wp_eStore:product_id:.+:end]#';
+		$old = false;
+		$fancy = false;
+		
+		// Maybe it's fancy
+		if(!$results) {
+			// Query the database for all posts that contain the OLD product shortcode
+       		$sql  = "SELECT * FROM " . $wpdb->prefix . "posts WHERE post_content LIKE '%[wp_eStore_fancy%' AND post_status = 'publish'";
+        	$results = $wpdb->get_results($sql); 	
+			$pattern = '#\[wp_eStore_fancy.+ id=.+]#';
+			$fancy = true;
+		}
+		
+		// Old shortcode
+		if(!$results) {
+			// Query the database for all posts that contain the OLD product shortcode
+       		$sql  = "SELECT * FROM " . $wpdb->prefix . "posts WHERE post_content LIKE '%?wp_eStore_add_to_cart=%' AND post_status = 'publish'";
+        	$results = $wpdb->get_results($sql); 	
+			$pattern = '#\?wp_eStore_add_to_cart=.+"]#';
+			$old = true;
+			$fancy = false;
+		}
           
 		//add the cart items to the arguments
 		foreach ($_SESSION['eStore_cart'] as $item) {
@@ -74,18 +95,32 @@ function shareyourcart_estore() {
 
                         preg_match_all($pattern, $results[$j]->post_content, $matches);
      
+	 					// If no matches are found continues the for without proceeding anymore
+	 					if(!$matches[0][0]) continue;
+						
                         foreach ($matches[0] as $match) {
-                            $pat = '[wp_eStore:product_id:';
-                            $m = str_replace ($pat, '', $match);
-
-                            $pat = ':end]';
-                            $m = str_replace ($pat, '', $m);
+                     		if(!$old) $pat = '[wp_eStore:product_id:';
+							else $pat = '?wp_eStore_add_to_cart=';
+							
+							if($fancy) {
+								$m = str_replace('[wp_eStore_fancy1 id=', '', $match);
+								$m = str_replace('[wp_eStore_fancy2 id=', '', $m);	
+							} else {
+        	                    $m = str_replace ($pat, '', $match);
+							}
+		
+                            if(!$old) $pat = ':end]';
+							else $pat = '"]';
+							
+							if($fancy) $m = str_replace (']', '', $m);
+                            else $m = str_replace ($pat, '', $m);
 
                             $pieces = explode('|',$m);
                             $key = $pieces[0];
                         }
                         
                         if($key == $item['item_number']) break;
+						
                     }  
                     
                     // Get the image of the product
@@ -96,52 +131,80 @@ function shareyourcart_estore() {
                     $results2 = $wpdb->get_results($sql2);	
 
                     $params['cart'][] = array(
-                    "item_name" => $item['name'],
-                    "item_url" => $results[$j]->guid,
-                    "item_price" => print_digi_cart_payment_currency($item['price'], WP_ESTORE_CURRENCY_SYMBOL),
-                    "item_description" => $results2[0]->description, 
-                    "item_picture_url" => !empty($img) ? $img[0] : '',
+                    	"item_name" => $item['name'],
+                    	"item_url" => $results[$j]->guid,
+                    	"item_price" => print_digi_cart_payment_currency($item['price'], WP_ESTORE_CURRENCY_SYMBOL),
+                    	"item_description" => $results2[0]->description, 
+                    	"item_picture_url" => !empty($img) ? $img[0] : '',
                     );
 		
                 } //cart loop
-	}
-	else
-	{
 	
-                //get the details of the specified product
+	} else {
+	
+        //get the details of the specified product
 		global $wp_query;
                 
                 $sql  = "SELECT * FROM " . $wpdb->prefix . "posts WHERE id = " . $_REQUEST['p'];
                 $results = $wpdb->get_results($sql);	
-                
+				                
                 $pattern = '#\[wp_eStore:product_id:.+:end]#';
+				$old = false;
+				$fancy = false;
                 preg_match_all($pattern, $results[0]->post_content, $matches);
+				
+				// Maybe it's the fancy alternative
+				if(!$matches[0][0]) {
+					$pattern = '#\[wp_eStore_fancy.+ id=.+]#';
+					$fancy = true;
+    	            preg_match_all($pattern, $results[0]->post_content, $matches);	
+				}
+				
+				// Maybe it's old shortcode
+				if(!$matches[0][0]) {
+					$pattern = '#\?wp_eStore_add_to_cart=.+"]#';
+					$old = true;
+					$fancy = false;
+					preg_match_all($pattern, $results[0]->post_content, $matches);
+				}
+				
+				if($matches[0][0]) {
+					foreach ($matches[0] as $match) {
+						if(!$old) $pattern = '[wp_eStore:product_id:';
+						else $pattern = '?wp_eStore_add_to_cart=';
+								
+						if($fancy) {
+							$m = str_replace('[wp_eStore_fancy1 id=', '', $match);
+							$m = str_replace('[wp_eStore_fancy2 id=', '', $m);
+						} else {
+							$m = str_replace($pattern, '', $match);
+						}
+	
+						if(!$old) $pattern = ':end]';
+						else  $pattern = '"]';
+						
+						if($fancy) $m = str_replace (']', '', $m);
+						else $m = str_replace ($pattern, '', $m);
+	
+						$pieces = explode('|',$m);
+						$key = $pieces[0];
+					}
+				}
 
-                foreach ($matches[0] as $match) {
-                    $pattern = '[wp_eStore:product_id:';
-                    $m = str_replace ($pattern, '', $match);
-
-                    $pattern = ':end]';
-                    $m = str_replace ($pattern, '', $m);
-
-                    $pieces = explode('|',$m);
-                    $key = $pieces[0];
-                }
-                
                 // Query the database to find the details of the product
-		$sql2  = "SELECT * FROM " . $wpdb->prefix . "wp_eStore_tbl WHERE id = " . $key;
+				$sql2  = "SELECT * FROM " . $wpdb->prefix . "wp_eStore_tbl WHERE id = " . $key;
                 $results2 = $wpdb->get_results($sql2);	
                 
                 $img = wp_get_attachment_image_src(get_post_thumbnail_id($results[0]->ID));
                 
                 $params['cart'][] = array(
-		'item_name' => $results2[0]->name,
-		'item_url' => $results[0]->guid,
-		'item_price' => print_digi_cart_payment_currency($results2[0]->price, WP_ESTORE_CURRENCY_SYMBOL),
-		'item_description' => $results2[0]->description,
-		'item_picture_url' =>  !empty($img) ? $img[0] : '',
-		);                           
-		
+					'item_name' => $results2[0]->name,
+					'item_url' => $results[0]->guid,
+					'item_price' => print_digi_cart_payment_currency($results2[0]->price, WP_ESTORE_CURRENCY_SYMBOL),
+					'item_description' => $results2[0]->description,
+					'item_picture_url' =>  !empty($img) ? $img[0] : '',
+				);                           
+	
 	}
 
 	shareyourcart_auth($params);
@@ -215,13 +278,30 @@ function shareyourcart_estore_coupon(){
 
 function shareyourcart_estore_button($content) { 
  
+ 	global $shareyourcart_button_showed;
+ 
+ 	// If the button was already displayed return the content without adding the button again
+ 	if($shareyourcart_button_showed) return $content;
     
-    $check = strstr(strip_tags(get_the_content()), "cart");
+	// Checks to see if this is the Cart
+    $check = strstr(strip_tags(get_the_content()), "[wp_eStore_cart");
     
+	// if it's a single page
     if((shareyourcart_estore_is_single_product() && !get_option('_shareyourcart_hide_on_product'))) {
+		
         $content .= shareyourcart_estore_getButton();
+		
+		// The button has been displayed
+		$shareyourcart_button_showed = true;
+		
+	// if it's the cart
     } else if (!get_option('_shareyourcart_hide_on_checkout') && $check && digi_cart_not_empty()) {
-        $content .= shareyourcart_estore_getButton();
+        
+		$content .= shareyourcart_estore_getButton();
+		
+		// The button has been displayed
+		$shareyourcart_button_showed = true;
+		
     }
     
     return $content;
@@ -241,7 +321,10 @@ function shareyourcart_estore_getButton($product_id = null)
 	if(!isset($product_id) && shareyourcart_estore_is_single_product())
 	{
 		//set the product id
+		if(get_option('_shareyourcart_hide_on_product')) return;
 		$product_id = $wp_query->post->ID;
+	} else {
+		if(get_option('_shareyourcart_hide_on_checkout')) return;
 	}
 
 	//the callback url from WP E-Commerce that will be called once the button is pressed
@@ -253,20 +336,38 @@ function shareyourcart_estore_getButton($product_id = null)
 	return ob_get_clean();
 }
 
-//wpsc_is_single_product() does not really work, so we need to use our own
+// Function to check if we are on a products page
 function shareyourcart_estore_is_single_product()
 {
 	
         global $wp_query;
 
         $pattern = '#\[wp_eStore:product_id:.+:end]#';
-        preg_match_all ($pattern, $wp_query->post->post_content, $matches);
+        preg_match_all($pattern, $wp_query->post->post_content, $matches);
+		
+		// If nothing is found try the fancy scheme for eStore
+		if(!$matches[0][0]) {
+			$pattern = '#\[wp_eStore_fancy.+ id=.+]#';
+       		preg_match_all($pattern, $wp_query->post->post_content, $matches);	
+		}
+		
+		// If nothing is found try the old scheme for eStore with the old shortcode
+		if(!$matches[0][0]) {
+
+			$pattern = '#\wp_eStore_add_to_cart#';
+			preg_match_all($pattern, $wp_query->post->post_content, $matches);
+			
+		}
         
-        // If the pattern is found verifies that we are not on a category listing page
-        foreach ($matches[0] as $match) {
-            if(is_single()) return true;
-        }
-        
+		// If we found any match
+		if($matches[0][0]) {
+			
+			// If the pattern is found verifies that we are not on a category listing page
+			if(is_single() or is_page()) return true;
+			
+		}
+       
+	   	// Return false otherwise
         return false;
         
 }

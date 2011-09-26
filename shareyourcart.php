@@ -35,6 +35,9 @@ $activation_status = FALSE;
 $shareyourcart_db_version = "1.0";
 $shareyourcart_secret_key = 'f03f6ef2-9286-11e0-b1d5-005056867abd';
 
+// Prevents the button from being showed twice
+$shareyourcart_button_showed = false;
+
 $VERTICAL_BUTTON_NORMAL = "vertical";
 $VERTICAL_BUTTON_LEFT = "vertical-left";
 
