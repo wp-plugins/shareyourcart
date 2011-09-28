@@ -315,7 +315,7 @@ function shareyourcart_estore_button($content) {
 */
 function shareyourcart_estore_getButton($product_id = null)
 {
-	global $wp_query;
+	global $wp_query, $shareyourcart_button_showed;
 	
 	//check if the product has not been set and we are on the product page
 	if(!isset($product_id) && shareyourcart_estore_is_single_product())
@@ -333,6 +333,8 @@ function shareyourcart_estore_getButton($product_id = null)
 	//render the view 
 	ob_start();
 	include(dirname(__FILE__).'/views/button.php');
+	
+	$shareyourcart_button_showed = true;
 	return ob_get_clean();
 }
 
@@ -350,6 +352,9 @@ function shareyourcart_estore_is_single_product()
 			$pattern = '#\[wp_eStore_fancy.+ id=.+]#';
        		preg_match_all($pattern, $wp_query->post->post_content, $matches);	
 		}
+
+	        // If multiple products are displayed on one page break;
+                if(count($matches[0]) > 1) return false;
 		
 		// If nothing is found try the old scheme for eStore with the old shortcode
 		if(!$matches[0][0]) {
