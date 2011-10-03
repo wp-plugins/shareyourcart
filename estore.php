@@ -59,14 +59,23 @@ function shareyourcart_estore() {
 	{	
                 
 		global $wp_query;
-          
+                
+                if(!WP_ESTORE_CURRENCY_SYMBOL) {
+                    if(get_option('cart_currency_symbol'))
+                        $currency = get_option('cart_currency_symbol');
+                    else 
+                        $currency = "USD";
+                } else {
+                    $currency = WP_ESTORE_CURRENCY_SYMBOL;
+                }
+                
 		//add the cart items to the arguments
 		foreach ($_SESSION['eStore_cart'] as $item) {
 
                     $params['cart'][] = array(
                     	"item_name" => $item['name'],
                     	"item_url" => $item['cartLink'],
-                    	"item_price" => print_digi_cart_payment_currency($item['price'], WP_ESTORE_CURRENCY_SYMBOL),
+                    	"item_price" => print_digi_cart_payment_currency($item['price'], $currency),
                     	"item_description" => "", 
                     	"item_picture_url" => $item['thumbnail_url'],
                     );
