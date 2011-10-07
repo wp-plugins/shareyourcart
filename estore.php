@@ -75,7 +75,7 @@ function shareyourcart_estore() {
                     $params['cart'][] = array(
                     	"item_name" => $item['name'],
                     	"item_url" => $item['cartLink'],
-                    	"item_price" => print_digi_cart_payment_currency($item['price'], $currency),
+                    	"item_price" => print_digi_cart_payment_currency($item['price'], $currency, "."),
                     	"item_description" => "", 
                     	"item_picture_url" => $item['thumbnail_url'],
                     );
