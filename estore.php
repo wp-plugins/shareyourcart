@@ -274,6 +274,7 @@ function shareyourcart_estore_getButton($product_id = null)
 		$product_id = $wp_query->post->ID;
 	} else {
 		if(get_option('_shareyourcart_hide_on_checkout')) return;
+                if(!digi_cart_not_empty()) return;
 	}
 
 	//the callback url from WP E-Commerce that will be called once the button is pressed
