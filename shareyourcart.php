@@ -4,7 +4,7 @@
 Plugin Name: ShareYourCart
 Plugin URI: http://www.shareyourcart.com
 Description: ShareYourCart™ helps you get more customers by motivating satisfied customers to talk with their friends about your products.
-Version: 1.3.2
+Version: 1.3.3
 Author: Barandi Solutions
 Author URI: http://www.barandisolutions.com
 License: GPLv2 or later

@@ -5,7 +5,7 @@ Donate link: http://www.shareyourcart.com/
 Tags: twitter, Facebook, tweet, affiliate, button, social, discount, coupon
 Requires at least: 3.0
 Tested up to: 3.1.3
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 
 ShareYourCart™ helps you get more customers by motivating satisfied customers to talk with their friends about your products. 
 
@@ -15,7 +15,7 @@ ShareYourCart™ helps you get more customers by motivating satisfied customers to
 You can choose how much of a discount to give (in fixed amount, percentage, or free shipping) and to which social media channels it should it be applied. You can also define what the advertisement should say, so that it fully benefits your sales.
 
 = Compatibility =
-The button is currently fully compatible with the WP e-Commerce v3.7 and above, eShop v6.2.8 and above as well as WP eStore 
+The button is currently fully compatible with the WP e-Commerce v3.7 and above, eShop v6.2.8 and above as well as WP eStore v3.4.9 and above
 For other shopping carts, it will use the lite Javascript code.
 
 == Installation ==
@@ -39,6 +39,10 @@ And the best thing is the entire process is automatic, and it simply works.
 Thus, you can focus on further building your business, and not on generating coupon codes.
 
 == Changelog ==
+= 1.3.3 =
+* Added support for older WP eStore Shopping Cart versions, like 3.4.9
+* Improved CSS loading speed
+
 = 1.3.2 =
 * Added support for the WP eStore Shopping Cart
 
