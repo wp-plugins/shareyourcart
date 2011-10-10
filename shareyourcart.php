@@ -510,7 +510,7 @@ function shareyourcart_init()
 //add any elements required to the head area
 function shareyourcart_wp_head()
 {
-	global $wpdb, $post;
+	global $wpdb, $post, $plugin_path;
 	
 	//get the  client id ( from the database )
         $settings = $wpdb->get_row("SELECT client_id FROM ".$wpdb->base_prefix."shareyourcart_settings LIMIT 1");
@@ -551,6 +551,15 @@ function shareyourcart_wp_head()
 			echo '<meta property="syc:price" content="'.htmlspecialchars($price).'" />'."\n";
 		}
 	}
+        
+        $style_file = $plugin_path . 'style.css';
+        $ie_style_file = $plugin_path . 'ie.css';
+        
+        echo '  <link rel="stylesheet" href="'.$style_file.'" type="text/css"/>
+                <!--[if lt IE 9]>
+                <link rel="stylesheet" href="'.$ie_style_file.'" type="text/css"/>
+                <![endif]-->';
+        
 }
 
 /***
