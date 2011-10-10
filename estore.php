@@ -185,7 +185,7 @@ function shareyourcart_estore_coupon(){
         $coupon_table_name = $wpdb->prefix . "wp_eStore_coupon_tbl";
         
         // The new version comes with an expiration date for Coupons
-        if(get_option("wp_eStore_db_version") >= 6.8) {
+        if(version_compare(get_option("wp_eStore_db_version"),'6.8')  >= 0) {
             $sql = "INSERT INTO ".$coupon_table_name."(coupon_code, discount_value, discount_type, active, redemption_limit, redemption_count, property, logic, value, expiry_date) 
                      VALUES ('".$coupon_code."', '".$discount."', '".$discount_type."', '".$post_coupon_active."', 1, 0, 1, 1, 0, '".date('Y-m-d', strtotime('now +1 day'))."')";
         } else {
