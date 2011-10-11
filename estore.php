@@ -270,12 +270,12 @@ function shareyourcart_estore_getButton($product_id = null)
 	if(!isset($product_id) && shareyourcart_estore_is_single_product())
 	{
 		//set the product id
-		if(get_option('_shareyourcart_hide_on_product')) return;
+		//if(get_option('_shareyourcart_hide_on_product')) return;
 		$product_id = $wp_query->post->ID;
-	} else {
-		if(get_option('_shareyourcart_hide_on_checkout')) return;
-                if(!digi_cart_not_empty()) return;
-	}
+	}// else {
+	//	if(get_option('_shareyourcart_hide_on_checkout')) return;
+        //        if(!digi_cart_not_empty()) return;
+	//}
 
 	//the callback url from WP E-Commerce that will be called once the button is pressed
 	$callback_url = get_bloginfo('wpurl').'/wp-admin/admin-ajax.php?action=shareyourcart_estore&'.(isset($product_id) ? 'p='.$product_id : null);
