@@ -5,7 +5,7 @@ Donate link: http://www.shareyourcart.com/
 Tags: twitter, Facebook, tweet, affiliate, button, social, discount, coupon
 Requires at least: 3.0
 Tested up to: 3.1.3
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 
 ShareYourCart™ helps you get more customers by motivating satisfied customers to talk with their friends about your products. 
 
@@ -39,6 +39,9 @@ And the best thing is the entire process is automatic, and it simply works.
 Thus, you can focus on further building your business, and not on generating coupon codes.
 
 == Changelog ==
+= 1.3.4 =
+* Fixed eStore issue where the shortcode does not appear anymore if the checkout checkbox is unchecked 
+
 = 1.3.3 =
 * Added support for older WP eStore Shopping Cart versions, like 3.4.9
 * Improved CSS loading speed
