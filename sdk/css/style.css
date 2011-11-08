@@ -1,0 +1,16 @@
+.button_iframe iframe {
+    width: 58px;
+    height: 230px;
+    position: fixed;
+    top:360px;
+    right:0px;
+}
+
+.button_iframe-normal iframe {
+    float:right;
+    height: 78px;
+    width: 230px;
+	position:relative;
+	z-index:1000;
+}
+
