@@ -4,7 +4,7 @@ Contributors: barandisolutions
 Donate link: http://www.shareyourcart.com/
 Tags: twitter, Facebook, tweet, affiliate, button, social, discount, coupon
 Requires at least: 3.0
-Tested up to: 3.1.3
+Tested up to: 3.2.1
 Stable tag: 1.4
 
 Increase by 10% the number of Facebook shares and Twitter tweets that your customers do about your business.
@@ -19,16 +19,16 @@ You can choose how much of a discount to give (in fixed amount, percentage, or f
 
 = Compatibility =
 The button is currently fully compatible with:
-1. WP e-Commerce v3.7+
-2. eShop v6.2.8+
-3. WP eStore v3.4.9+
-4. wpStoreCart v2.5.1+
+* WP e-Commerce v3.7+
+* eShop v6.2.8+
+* WP eStore v3.4.9+
+* wpStoreCart v2.5.1+
 
 For other shopping carts, it will fallback to the lite Javascript code.
 
 = Known Issues =
-1. WP e-Commerce v3.7 as well as eShop v6.2.8+ do not show the ShareYourCart button in the product page
-2. eShop v6.2.8 and v6.2.9 do not automatically apply the generated coupon to the user's cart, so he has to do it manually
+* WP e-Commerce v3.7 as well as eShop v6.2.8+ do not show the ShareYourCart button in the product page
+* eShop v6.2.8 and v6.2.9 do not automatically apply the generated coupon to the user's cart, so he has to do it manually
 
 == Installation ==
 1. Upload the folder 'shareyourcart' to the '/wp-content/plugins/' directory
