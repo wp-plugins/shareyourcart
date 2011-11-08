@@ -3,7 +3,7 @@
  * 
 Plugin Name: ShareYourCart
 Plugin URI: http://www.shareyourcart.com
-Description: <strong>Increase your social media exposure by 10%!</strong> ShareYourCart helps you get more customers by motivating satisfied 
+Description: <strong>Increase your social media exposure by 10%!</strong> ShareYourCart helps you get more customers by motivating satisfied clients to talk with their friends about your products. 
 Version: 1.4
 Author: Barandi Solutions
 Author URI: http://www.barandisolutions.com
