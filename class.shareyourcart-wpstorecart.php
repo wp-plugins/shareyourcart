@@ -89,15 +89,35 @@ class ShareYourCartWPStoreCart extends ShareYourCartWordpressPlugin {
 		parent::pluginsLoadedHook();
 
 		if(!$this->isCartActive()) return;
-
-		add_action('wp_ajax_nopriv_shareyourcart_wpstorecart',        array(&$this, 'buttonCallback'));
-		add_action('wp_ajax_shareyourcart_wpstorecart',               array(&$this, 'buttonCallback'));
-
-		add_action('wp_ajax_nopriv_shareyourcart_wpstorecart_coupon', array(&$this, 'couponCallback'));
-		add_action('wp_ajax_shareyourcart_wpstorecart_coupon',        array(&$this, 'couponCallback'));
+		
+		//instead of using wp_ajax, better hook at init function
+		//wp_ajax is not allways reliable, as some plugins might affect
+		//it's behavior
+		add_action('init', array(&$this, 'processInit'));
 
 		remove_shortcode('wpstorecart');
 		add_shortcode('wpstorecart', array(&$this, 'genericHook'));
+	}
+	
+	/*************
+	*
+	* Called when Wordpress has been initialized
+	*
+	************/
+	public function processInit(){
+	
+		if(isset($_REQUEST['action'])){
+			switch($_REQUEST['action']){
+			
+			case 'shareyourcart_wpstorecart':
+				$this->buttonCallback();
+				break;
+				
+			case 'shareyourcart_wpstorecart_coupon':
+				$this->couponCallback();
+				break;
+			}
+		}
 	}
 
 	/**
@@ -109,7 +129,7 @@ class ShareYourCartWPStoreCart extends ShareYourCartWordpressPlugin {
 
 		global $wp_query;
 
-		$callback_url = get_bloginfo('wpurl').'/wp-admin/admin-ajax.php?action=shareyourcart_wpstorecart';
+		$callback_url = get_bloginfo('wpurl').'/?action=shareyourcart_wpstorecart';
 
 		if($this->isSingleProduct())
 		{
@@ -161,7 +181,7 @@ class ShareYourCartWPStoreCart extends ShareYourCartWordpressPlugin {
 
 		//specify the parameters
 		$params = array(
-			'callback_url' => get_bloginfo('wpurl').'/wp-admin/admin-ajax.php?action=shareyourcart_wpstorecart_coupon'.(isset($_REQUEST['p']) ? '&p='.$_REQUEST['p'] : '' ),
+			'callback_url' => get_bloginfo('wpurl').'/?action=shareyourcart_wpstorecart_coupon'.(isset($_REQUEST['p']) ? '&p='.$_REQUEST['p'] : '' ),
 			'success_url' => get_permalink($devOptions['checkoutpage']),
 			'cancel_url' => get_permalink($devOptions['checkoutpage']),
 		);

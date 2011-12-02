@@ -50,11 +50,10 @@ class ShareYourCartEStore extends ShareYourCartWordpressPlugin {
 		
 		if(!$this->isCartActive()) return;
 		
-		add_action('wp_ajax_nopriv_shareyourcart_estore',        array(&$this, 'buttonCallback'));
-		add_action('wp_ajax_shareyourcart_estore',               array(&$this, 'buttonCallback'));
-
-		add_action('wp_ajax_nopriv_shareyourcart_estore_coupon', array(&$this, 'couponCallback'));
-		add_action('wp_ajax_shareyourcart_estore_coupon',        array(&$this, 'couponCallback'));
+		//instead of using wp_ajax, better hook at init function
+		//wp_ajax is not allways reliable, as some plugins might affect
+		//it's behavior
+		add_action('init', array(&$this, 'processInit'));
 		
 		//hook the product. make sure it is executed BEFORE the eStore hook, which has priority 11
 		add_filter('the_content',                                array(&$this, 'contentHook'), 10);
@@ -70,6 +69,27 @@ class ShareYourCartEStore extends ShareYourCartWordpressPlugin {
 		add_shortcode('wp_eStore_cart_fancy1_when_not_empty', array(&$this,'cartHook'));
 	}
 	
+	/*************
+	*
+	* Called when Wordpress has been initialized
+	*
+	************/
+	public function processInit(){
+	
+		if(isset($_REQUEST['action'])){
+			switch($_REQUEST['action']){
+			
+			case 'shareyourcart_estore':
+				$this->buttonCallback();
+				break;
+				
+			case 'shareyourcart_estore_coupon':
+				$this->couponCallback();
+				break;
+			}
+		}
+	}
+	
 	/**
 	*
 	* Return the URL to be called when the button is pressed
@@ -79,7 +99,7 @@ class ShareYourCartEStore extends ShareYourCartWordpressPlugin {
 	
 		global $wp_query;
 		
-		$callback_url = get_bloginfo('wpurl').'/wp-admin/admin-ajax.php?action=shareyourcart_estore';
+		$callback_url = get_bloginfo('wpurl').'/?action=shareyourcart_estore';
 		
 		if($this->isSingleProduct())
 		{
@@ -204,7 +224,7 @@ class ShareYourCartEStore extends ShareYourCartWordpressPlugin {
 		
 		//specify the parameters
 		$params = array(
-			'callback_url' => get_bloginfo('wpurl').'/wp-admin/admin-ajax.php?action=shareyourcart_estore_coupon'.(isset($_REQUEST['p']) ? '&p='.$_REQUEST['p'] : '' ),
+			'callback_url' => get_bloginfo('wpurl').'/?action=shareyourcart_estore_coupon'.(isset($_REQUEST['p']) ? '&p='.$_REQUEST['p'] : '' ),
 			'success_url' => digi_cart_current_page_url(),
 			'cancel_url' => digi_cart_current_page_url(),
 		);

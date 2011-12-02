@@ -321,23 +321,19 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 		$email_for_recover = isset($alternative_email) ? $alternative_email : $this->getAdminEmail();
                 
 		// It will test to see if the recovery option works
-		if (($recover = $this->recover($this->getSecretKey(), $this->getDomain(), $email_for_recover)) == true) {
+		if (($recover = $this->recover($this->getSecretKey(), $this->getDomain(), $email_for_recover, $message)) == true) {
 
-			if (isset($message))
-			$message = 'An email has been sent with your credentials';
 			return true;
 		}
 
 		// It will test to see if the register option will work
-		if (!(($register = $this->register($this->getSecretKey(), $this->getDomain(), $this->getAdminEmail())) === false)) {
+		if (!(($register = $this->register($this->getSecretKey(), $this->getDomain(), $this->getAdminEmail(),$message)) === false)) {
 
 			$this->setConfigValue('appKey', @$register['app_key']);
 			$this->setConfigValue('clientId', @$register['client_id']);
                         
                         $this->setConfigValue("account_status", "active");
 
-			if (isset($message))
-			$message = 'The account has been registered';
 			return true;
 		}
 
@@ -346,7 +342,7 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 	}
 
 	/**
-	 *
+	 * TODO: remove this function
 	 * getAccountCredentialsAJAX
 	 * @return JSON
 	 */
@@ -402,13 +398,13 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 		$current_button_type = $this->getConfigValue("button_type");
 		$button_html = $this->getConfigValue("button_html");
 		
-		$button_img = $this->getConfigValue("button-img");
-		$button_img_width = $this->getConfigValue("button-img-width");
-		$button_img_height = $this->getConfigValue("button-img-height");
+		$button_img = $this->getConfigValue("btn-img");
+		$button_img_width = $this->getConfigValue("btn-img-width");
+		$button_img_height = $this->getConfigValue("btn-img-height");
 		
-		$button_img_hover = $this->getConfigValue("button-img-hover");
-		$button_img_hover_width = $this->getConfigValue("button-img-hover-width");
-		$button_img_hover_height = $this->getConfigValue("button-img-hover-height");
+		$button_img_hover = $this->getConfigValue("btn-img-h");
+		$button_img_hover_width = $this->getConfigValue("btn-img-h-width");
+		$button_img_hover_height = $this->getConfigValue("btn-img-h-height");
 
 		switch ($current_button_type)
 		{
@@ -663,16 +659,16 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 				if (move_uploaded_file($_FILES['button-img']['tmp_name'], $target_path))
 				{
 					//set the button img
-					$this->setConfigValue("button-img", $this->createUrl($target_path));
-					$this->setConfigValue("button-img-width", $width);
-					$this->setConfigValue("button-img-height", $height);
+					$this->setConfigValue("btn-img", $this->createUrl($target_path));
+					$this->setConfigValue("btn-img-width", $width);
+					$this->setConfigValue("btn-img-height", $height);
 				}
 			}
 
 			if($_FILES["button-img-hover"]["name"]!='') {
 				$target_path = dirname(__FILE__). "/img/";
 
-				$target_path = $target_path . 'button-img-hover.png';
+				$target_path = $target_path . 'btn-img-hover.png';
 
 				if(file_exists($target_path)) unlink($target_path);
 				
@@ -681,9 +677,9 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 				if(move_uploaded_file($_FILES['button-img-hover']['tmp_name'], $target_path))
 				{
 					//set the show'
-					$this->setConfigValue("button-img-hover", $this->createUrl($target_path));
-					$this->setConfigValue("button-img-hover-width", $width);
-					$this->setConfigValue("button-img-hover-height", $height);
+					$this->setConfigValue("btn-img-h", $this->createUrl($target_path));
+					$this->setConfigValue("btn-img-h-width", $width);
+					$this->setConfigValue("btn-img-h-height", $height);
 				}
 			}
 
@@ -697,8 +693,8 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 		$show_on_product = !$this->getConfigValue("hide_on_product");
 
 		$button_html = $this->getConfigValue("button_html");
-		$button_img = $this->getConfigValue("button-img");
-		$button_img_hover = $this->getConfigValue("button-img-hover");
+		$button_img = $this->getConfigValue("btn-img");
+		$button_img_hover = $this->getConfigValue("btn-img-h");
 
 		//render the view
 		ob_start();

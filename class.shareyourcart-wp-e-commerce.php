@@ -50,11 +50,10 @@ class ShareYourCartWPECommerce extends ShareYourCartWordpressPlugin {
 		
 		if(!$this->isCartActive()) return;
 		
-		add_action('wp_ajax_nopriv_shareyourcart_wp_e_commerce',        array(&$this, 'buttonCallback'));
-		add_action('wp_ajax_shareyourcart_wp_e_commerce',               array(&$this, 'buttonCallback'));
-
-		add_action('wp_ajax_nopriv_shareyourcart_wp_e_commerce_coupon', array(&$this, 'couponCallback'));
-		add_action('wp_ajax_shareyourcart_wp_e_commerce_coupon',        array(&$this, 'couponCallback'));
+		//instead of using wp_ajax, better hook at init function
+		//wp_ajax is not allways reliable, as some plugins might affect
+		//it's behavior
+		add_action('init', array(&$this, 'processInit'));
 		
 		add_action('wpsc_top_of_products_page',                         array(&$this,'showProductButton')); //wp e-commerce v3.7+
 		
@@ -63,6 +62,28 @@ class ShareYourCartWPECommerce extends ShareYourCartWordpressPlugin {
 			add_action('wpsc_before_shipping_of_shopping_cart',         array(&$this,'showCartButton'));  //wp e-commerce v3.8+
 		else
 			add_action('wpsc_before_form_of_shopping_cart',             array(&$this,'showCartButton')); //wp e-commerce v3.7
+	}
+	
+	
+	/*************
+	*
+	* Called when Wordpress has been initialized
+	*
+	************/
+	public function processInit(){
+	
+		if(isset($_REQUEST['action'])){
+			switch($_REQUEST['action']){
+			
+			case 'shareyourcart_wp_e_commerce':
+				$this->buttonCallback();
+				break;
+				
+			case 'shareyourcart_wp_e_commerce_coupon':
+				$this->couponCallback();
+				break;
+			}
+		}
 	}
 	
 	/**
@@ -93,7 +114,7 @@ class ShareYourCartWPECommerce extends ShareYourCartWordpressPlugin {
 	
 		global $wp_query;
 		
-		$callback_url = get_bloginfo('wpurl').'/wp-admin/admin-ajax.php?action=shareyourcart_wp_e_commerce';
+		$callback_url = get_bloginfo('wpurl').'/?action=shareyourcart_wp_e_commerce';
 		
 		if($this->isSingleProduct())
 		{
@@ -126,7 +147,7 @@ class ShareYourCartWPECommerce extends ShareYourCartWordpressPlugin {
 		
 		//specify the parameters
 		$params = array(
-			'callback_url' => get_bloginfo('wpurl').'/wp-admin/admin-ajax.php?action=shareyourcart_wp_e_commerce_coupon'.(isset($_REQUEST['p']) ? '&p='.$_REQUEST['p'] : '' ),
+			'callback_url' => get_bloginfo('wpurl').'/?action=shareyourcart_wp_e_commerce_coupon'.(isset($_REQUEST['p']) ? '&p='.$_REQUEST['p'] : '' ),
 			'success_url' => get_option('shopping_cart_url'),
 			'cancel_url' => get_option('shopping_cart_url'),
 		);

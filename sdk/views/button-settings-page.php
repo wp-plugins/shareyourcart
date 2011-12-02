@@ -63,6 +63,7 @@
                                 <?php if (!empty($button_img)): ?>
                                     <img src="<?php echo $button_img ?>" height="40" />
                                 <?php endif; ?>
+                                <br />
                                 <input type="hidden" name="MAX_FILE_SIZE" value="100000000000" />
                                 <input type="file" accept="image/gif, image/jpeg, image/jpg, image/png" name="button-img" id="button-img" />
                             </td>
@@ -76,6 +77,7 @@
                                 <?php if (!empty($button_img_hover)): ?>
                                     <img src="<?php echo $button_img_hover ?>" height="40" />
                                 <?php endif; ?>
+                                <br />
                                 <input type="hidden" name="MAX_FILE_SIZE" value="100000000000" />
                                 <input type="file" accept="image/gif, image/jpeg, image/jpg, image/png" name="button-img-hover" id="button-img-hover" />
                             </td>

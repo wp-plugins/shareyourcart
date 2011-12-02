@@ -50,11 +50,10 @@ class ShareYourCartWPEShop extends ShareYourCartWordpressPlugin {
 
 		if(!$this->isCartActive()) return;
 
-		add_action('wp_ajax_nopriv_shareyourcart_eshop',        array(&$this, 'buttonCallback'));
-		add_action('wp_ajax_shareyourcart_eshop',               array(&$this, 'buttonCallback'));
-
-		add_action('wp_ajax_nopriv_shareyourcart_eshop_coupon', array(&$this, 'couponCallback'));
-		add_action('wp_ajax_shareyourcart_eshop_coupon',        array(&$this, 'couponCallback'));
+		//instead of using wp_ajax, better hook at init function
+		//wp_ajax is not allways reliable, as some plugins might affect
+		//it's behavior
+		add_action('init', array(&$this, 'processInit'));
 
 		/**** CHECKOUT PAGE *****/
 		if(version_compare(ESHOP_VERSION,'6.2.8') >= 0)
@@ -69,6 +68,27 @@ class ShareYourCartWPEShop extends ShareYourCartWordpressPlugin {
 			//add_shortcode('eshop_details', 'shareyourcart_eshop_details');
 		}
 	}
+	
+	/*************
+	*
+	* Called when Wordpress has been initialized
+	*
+	************/
+	public function processInit(){
+	
+		if(isset($_REQUEST['action'])){
+			switch($_REQUEST['action']){
+			
+			case 'shareyourcart_eshop':
+				$this->buttonCallback();
+				break;
+				
+			case 'shareyourcart_eshop_coupon':
+				$this->couponCallback();
+				break;
+			}
+		}
+	}
 
 	/**
 	 *
@@ -79,7 +99,7 @@ class ShareYourCartWPEShop extends ShareYourCartWordpressPlugin {
 
 		global $wp_query;
 
-		$callback_url = get_bloginfo('wpurl').'/wp-admin/admin-ajax.php?action=shareyourcart_eshop';
+		$callback_url = get_bloginfo('wpurl').'/?action=shareyourcart_eshop';
 
 		if($this->isSingleProduct())
 		{
@@ -112,7 +132,7 @@ class ShareYourCartWPEShop extends ShareYourCartWordpressPlugin {
 
 		//specify the parameters
 		$params = array(
-			'callback_url' => get_bloginfo('wpurl').'/wp-admin/admin-ajax.php?action=shareyourcart_eshop_coupon'.(isset($_REQUEST['p']) ? '&p='.$_REQUEST['p'] : '' ),
+			'callback_url' => get_bloginfo('wpurl').'/?action=shareyourcart_eshop_coupon'.(isset($_REQUEST['p']) ? '&p='.$_REQUEST['p'] : '' ),
 			'success_url' => get_permalink($eshopoptions['cart']),
 			'cancel_url' => get_permalink($eshopoptions['cart']),
 		);

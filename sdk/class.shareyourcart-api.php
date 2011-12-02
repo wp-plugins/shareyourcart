@@ -176,6 +176,13 @@ class ShareYourCartAPI {
 			
 			return false;     
         }
+		
+		//if the caller is expecting a message
+		//let him know what happened
+		if(isset($message)){
+		
+			$message = 'The account has been registered';
+		}
         
         // Return the response after decoding it
         return json_decode($response, true);    
@@ -220,6 +227,13 @@ class ShareYourCartAPI {
 			
 			return false;
         }
+		
+		//if the caller is expecting a message
+		//let him know what happened
+		if(isset($message)){
+		
+			$message = (!empty($response) ? $response : "An email has been sent with your credentials at $email");
+		}
         
         return true;
         
@@ -264,6 +278,13 @@ class ShareYourCartAPI {
 			
 			return false;
         }
+		
+		//if the caller is expecting a message
+		//let him know what happened
+		if(isset($message)){
+		
+			$message = (!empty($response) ? $response : ($activate ? 'The account has been enabled' : 'The account has been disabled'));
+		}
         
         return true;
     }

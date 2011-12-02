@@ -183,7 +183,16 @@ li#toplevel_page_shareyourcart .wp-menu-toggle{
 }
 
 .table-small {
-    width:35%;    
+    width:45%;    
+}
+
+.table-small tr th {
+	text-align: left;
+    width: 50%;    
+}
+
+.table-small tr td {
+	text-align: left;  
 }
 
 .form-table td {
@@ -203,7 +212,7 @@ table tr td {
 .buttonOption {
     float:left;
     width:33%;
-    height: 280px;
+    height: 290px;
     background: url('../img/spacer.png') right top repeat-y;
 }
 
@@ -292,7 +301,7 @@ select {
 
 .buttonTextarea {
     width:280px;  
-    height:200px;
+    height:230px;
 }
 
 .buttonCheckbox {
