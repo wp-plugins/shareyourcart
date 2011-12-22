@@ -244,17 +244,19 @@ class ShareYourCartEStore extends ShareYourCartWordpressPlugin {
 			}
 			
 			//add the cart items to the arguments
-			foreach ($_SESSION['eStore_cart'] as $item) {
+                        if($_SESSION['eStore_cart'] && count($_SESSION['eStore_cart']) > 0) {
+                            foreach ($_SESSION['eStore_cart'] as $item) {
 
-				$params['cart'][] = array(
-				"item_name" => $item['name'],
-				"item_url" => $item['cartLink'],
-				"item_price" => print_digi_cart_payment_currency($item['price'], $currency, "."),
-				"item_description" => "", 
-				"item_picture_url" => $item['thumbnail_url'],
-				);
-				
-			} //cart loop
+                                    $params['cart'][] = array(
+                                    "item_name" => $item['name'],
+                                    "item_url" => $item['cartLink'],
+                                    "item_price" => print_digi_cart_payment_currency($item['price'], $currency, "."),
+                                    "item_description" => "", 
+                                    "item_picture_url" => $item['thumbnail_url'],
+                                    );
+
+                            } //cart loop
+                        }
 		}
 		else
 		{

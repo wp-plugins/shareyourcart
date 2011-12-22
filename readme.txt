@@ -5,7 +5,7 @@ Donate link: http://www.shareyourcart.com/
 Tags: twitter, Facebook, tweet, affiliate, button, social, discount, coupon
 Requires at least: 3.0
 Tested up to: 3.2.1
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 
 Increase by 10% the number of Facebook shares and Twitter tweets that your customers do about your business.
 This means ShareYourCart™ helps you get more customers by motivating satisfied customers to talk with their friends about your products. 
@@ -52,6 +52,9 @@ And the best thing is the entire process is automatic, and it simply works.
 Thus, you can focus on further building your business, and not on generating coupon codes.
 
 == Changelog ==
+= 1.4.2 =
+Our latest release in 2011 fixes some small issues encountered on a few custom themes. Happy Hollidays!
+
 = 1.4.1 =
 * Switched the method of building the callback URL from wp-ajax to a normal post. wp-ajax was not reliable enough as some 3rd party plugins might make it mallfunction
 

@@ -1,9 +1,6 @@
-<div class="shareyourcart-button" 
-<?php if(isset($callback_url) && !empty($callback_url)): ?>
-data-syc-callback_url="<?php echo $callback_url; ?>"
-<?php endif; ?> 
-data-syc-layout="custom"
-><img class="syc-button-img" src="<?php echo $this->createUrl(dirname(__FILE__).'/../img/pixel.gif'); ?>" /></div>
+<div class="shareyourcart-button" <?php echo (isset($callback_url) && !empty($callback_url)) ? "data-syc-callback_url=$callback_url" : ''; ?> data-syc-layout="custom">
+<img class="syc-button-img" src="<?php echo $this->createUrl(dirname(__FILE__).'/../img/pixel.gif'); ?>" />
+</div>
 
 <?php
 
