@@ -1,4 +1,4 @@
-<div class="shareyourcart-button <?php echo ( $this->getConfigValue('button_position') == 'floating'  ? 'button_iframe' : 'button_iframe-normal');?>" <?php echo (isset($callback_url) && !empty($callback_url)) ? "data-syc-callback_url=$callback_url" : ''; ?> data-syc-skin="<?php echo $this->getConfigValue('button_skin');?>" data-syc-orientation="<?php echo $this->getConfigValue('button_position'); ?>" ></div>
+<div class="shareyourcart-button <?php echo ( $this->getConfigValue('button_position') == 'floating'  ? 'button_iframe' : 'button_iframe-normal');?> <?php echo ( !$this->getConfigValue('dont_set_height') ? 'button_height' : ''); ?>" <?php echo (isset($callback_url) && !empty($callback_url)) ? "data-syc-callback_url=$callback_url" : ''; ?> data-syc-skin="<?php echo $this->getConfigValue('button_skin');?>" data-syc-orientation="<?php echo $this->getConfigValue('button_position'); ?>" ></div>
 
 <script type="text/javascript">
    (function() {

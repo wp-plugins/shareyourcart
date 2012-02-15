@@ -36,7 +36,7 @@ class ShareYourCartWPECommerce extends ShareYourCartWordpressPlugin {
 	*/
 	protected function getSecretKey()
 	{
-		return '44e77dac-692d-4541-940f-0bc27b077503';
+		return 'f41b15ac-b497-4a08-9840-99c057195a1a';
 	}
 	
 	/*
@@ -63,7 +63,6 @@ class ShareYourCartWPECommerce extends ShareYourCartWordpressPlugin {
 		else
 			add_action('wpsc_before_form_of_shopping_cart',             array(&$this,'showCartButton')); //wp e-commerce v3.7
 	}
-	
 	
 	/*************
 	*
@@ -133,7 +132,7 @@ class ShareYourCartWPECommerce extends ShareYourCartWordpressPlugin {
 	protected function isSingleProduct(){
 		global $wp_query;
 		
-		return 'wpsc-product' == $wp_query->post->post_type && $wp_query->post_count == 1 ;
+		return 'wpsc-product' == $wp_query->post->post_type && !is_archive() && $wp_query->post_count <= 1;
 	}
 	
 	/*

@@ -36,7 +36,7 @@ class ShareYourCartEStore extends ShareYourCartWordpressPlugin {
 	*/
 	protected function getSecretKey()
 	{
-		return 'ea0aa3c6-5983-4a5d-aae7-c78d0a3084af';
+		return '9d5db5f3-ec0a-4222-957a-462b90116d74';
 	}
 	
 	/*

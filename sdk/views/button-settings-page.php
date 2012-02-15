@@ -1,7 +1,10 @@
+<script type="text/javascript">
+  if(_gaq) _gaq.push(['_trackPageview', '/admin/button-settings-view']);
+</script>
 <div class="wrap">
 	<?php if($show_header):?>
     <h2>
-        <a href="http://www.shareyourcart.com" target="_blank" title="Shareyourcart" class="shareyourcart-logo">
+        <a href="http://www.shareyourcart.com" target="_blank" title="Shareyourcart" class="shareyourcart-logo" onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin/button-settings-view/logo-click']);">
             <img src="<?php echo $this->createUrl(dirname(__FILE__).'/../img/shareyourcart-logo.png'); ?>"/>
         </a>
 		<div class="syc-slogan">Increase your social media exposure by 10%!</div>
@@ -21,7 +24,7 @@
                 
                 <div class="buttonOption">
                     
-                    <input class="buttonOptionRadio" type="radio" value="1" id="button_type_1" <?php if ($current_button_type == '1'||$current_button_type == '') echo 'checked' ?> name="button_type" />
+                    <input class="buttonOptionRadio" type="radio" value="1" id="button_type_1" <?php if ($current_button_type == '1'||$current_button_type == '') echo 'checked' ?> name="button_type" onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin/button-settings-view/default-click']);" />
                     <label class="buttonOptionLabel" for="button_type_1">Use Standard Button</label>	
                     <br /><br />
                     <table class="form-table shareyourcart_button_standard" name="shareyourcart_button_standard">
@@ -30,7 +33,7 @@
                         </tr>
                         <tr align="center">
                             <td>
-                                <select name="button_skin" id="button_skin">
+                                <select name="button_skin" id="button_skin" onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin/button-settings-view/button-skin-click']);">
                                     <option name="orange" <?php echo $current_skin == 'orange' ? 'selected="selected"' : ''; ?> value="orange">Orange</option>
                                     <option name="blue" <?php echo $current_skin == 'blue' ? 'selected="selected"' : ''; ?> value="blue">Blue</option>
                                 </select>                        
@@ -41,17 +44,22 @@
                         </tr>
                         <tr align="center">
                             <td>
-                                <select name="button_position" id="button_position">
+                                <select name="button_position" id="button_position" onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin/button-settings-view/button-position-click']);">
                                     <option name="normal" <?php echo $current_position == 'normal' ? 'selected="selected"' : ''; ?> value="normal">Normal</option>
                                     <option name="floating" <?php echo $current_position == 'floating' ? 'selected="selected"' : ''; ?> value="floating">Floating</option>
                                 </select>                        
                             </td>
-                        </tr>				
+                        </tr>		
+                        <tr align="center">
+                            <td>
+								<input class="buttonCheckbox" name="show_on_single_row" <?php echo $show_on_single_row ? 'checked="checked"' : ''; ?>  type='checkbox' onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin/button-settings-view/toggle-show-on-single-row-click']);">Check this if you want the button to be shown on it's own row</input>
+                            </td>
+                        </tr>								
                     </table>
                 </div>
 
                 <div class="buttonOption">
-                    <input class="buttonOptionRadio" type="radio" value="2" id="button_type_2" name="button_type" <?php if ($current_button_type == '2') echo 'checked' ?>/>
+                    <input class="buttonOptionRadio" type="radio" value="2" id="button_type_2" name="button_type" <?php if ($current_button_type == '2') echo 'checked' ?> onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin/button-settings-view/image-button-click']);"/>
                     <label class="buttonOptionLabel" for="button_type_2">Use Image Button</label>
                     <br /><?php if (empty($button_img)){ ?><br /><?php } ?>
                     <table class="form-table shareyourcart_button_image" name="shareyourcart_button_image">
@@ -65,7 +73,7 @@
                                 <?php endif; ?>
                                 <br />
                                 <input type="hidden" name="MAX_FILE_SIZE" value="100000000000" />
-                                <input type="file" accept="image/gif, image/jpeg, image/jpg, image/png" name="button-img" id="button-img" />
+                                <input type="file" accept="image/gif, image/jpeg, image/jpg, image/png" name="button-img" id="button-img" onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin/button-settings-view/upload-normal-img-click']);" />
                             </td>
                         </tr> 
 
@@ -79,14 +87,14 @@
                                 <?php endif; ?>
                                 <br />
                                 <input type="hidden" name="MAX_FILE_SIZE" value="100000000000" />
-                                <input type="file" accept="image/gif, image/jpeg, image/jpg, image/png" name="button-img-hover" id="button-img-hover" />
+                                <input type="file" accept="image/gif, image/jpeg, image/jpg, image/png" name="button-img-hover" id="button-img-hover" onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin/button-settings-view/upload-hover-img-click']);" />
                             </td>
                         </tr>               				
                     </table>
                 </div>
 
                 <div class="buttonOption last">
-                    <input class="buttonOptionRadio" type="radio" value="3" id="button_type_3" name="button_type" <?php if ($current_button_type == '3') echo 'checked' ?>/>
+                    <input class="buttonOptionRadio" type="radio" value="3" id="button_type_3" name="button_type" <?php if ($current_button_type == '3') echo 'checked' ?> onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin/button-settings-view/custom-button-click']);"/>
                     <label class="buttonOptionLabel" for="button_type_3">Build your own HTML button</label>	
                     <table class="form-table shareyourcart_button_html" name="shareyourcart_button_html">
                         <tr>                    
@@ -108,15 +116,15 @@
                         <tr>
                             <th scope="row" valign="top">Show button by default on: </th>
                             <td>
-                                <input class="buttonCheckbox" name="show_on_product" <?php echo $show_on_product ? 'checked="checked"' : ''; ?>  type='checkbox'>Product page</input>
+                                <input class="buttonCheckbox" name="show_on_product" <?php echo $show_on_product ? 'checked="checked"' : ''; ?>  type='checkbox' onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin/button-settings-view/toggle-show-on-product-click']);">Product page</input>
                                 <br />
-                                <input class="buttonCheckbox" name="show_on_checkout" <?php echo $show_on_checkout ? 'checked="checked"' : ''; ?> type='checkbox'>Checkout page</input>                        
+                                <input class="buttonCheckbox" name="show_on_checkout" <?php echo $show_on_checkout ? 'checked="checked"' : ''; ?> type='checkbox' onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin/button-settings-view/toggle-show-on-checkout-click']);">Checkout page</input>                        
                             </td>
                         </tr>
                     </table>
               
                 
-                <div class="submit"><input type="submit" class="button" name="syc-visual-form" id="syc-visual-form" value="Save"></div>            
+                <div class="submit"><input type="submit" class="button" name="syc-visual-form" id="syc-visual-form" value="Save" onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin/button-settings-view/save-click']);"></div>            
                 
             </fieldset>	
             <br />
@@ -125,7 +133,7 @@
 
 	<?php if($show_footer):?>
     <h2>Contact</h2>
-    <p>You can find help in our <a href="http://shareyourcart.uservoice.com" target="_blank" title="forum">forum</a>, or if you have a private question, you can <a href="http://www.shareyourcart.com/contact" target="_blank">contact us directly</a></p>
+    <p> If you've got 30 seconds, we'd <a href="http://shareyourcart.uservoice.com" target="_blank" title="forum" class="api-link" onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin/button-settings-view/forum-click']);">love to know what ideal outcome you'd like ShareYourCart to help bring to your business</a>, or if you have a private question, you can <a href="http://www.shareyourcart.com/contact" target="_blank" class="api-link" onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin/button-settings-view/contact-click']);">contact us directly</a></p>
     <br />
 	<?php endif; ?>
 </div>

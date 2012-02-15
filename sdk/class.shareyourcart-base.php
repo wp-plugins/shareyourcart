@@ -160,12 +160,6 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 		
 			$activated = $this->activate($message);
 		}
-		
-		//if activation did not work, try to get the proper account credentials
-		if(!$activated){
-			//register or recover the account credentials
-			$this->getAccountCredentials($message);
-		}
 
 		return true;
 	}
@@ -309,59 +303,6 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 		session_start();
 
 		$this->loadSessionData();
-	}
-
-	/**
-	 * getAccountCredentials
-	 * @param null
-	 * @return string OR FALSE
-	 */
-	public function getAccountCredentials(&$message = null,$alternative_email = null) {
-
-		$email_for_recover = isset($alternative_email) ? $alternative_email : $this->getAdminEmail();
-                
-		// It will test to see if the recovery option works
-		if (($recover = $this->recover($this->getSecretKey(), $this->getDomain(), $email_for_recover, $message)) == true) {
-
-			return true;
-		}
-
-		// It will test to see if the register option will work
-		if (!(($register = $this->register($this->getSecretKey(), $this->getDomain(), $this->getAdminEmail(),$message)) === false)) {
-
-			$this->setConfigValue('appKey', @$register['app_key']);
-			$this->setConfigValue('clientId', @$register['client_id']);
-                        
-                        $this->setConfigValue("account_status", "active");
-
-			return true;
-		}
-
-		// It will inform the user that the domain is already registered, and that recovery failed
-		return FALSE;
-	}
-
-	/**
-	 * TODO: remove this function
-	 * getAccountCredentialsAJAX
-	 * @return JSON
-	 */
-	public function getAccountCredentialsAJAX() {
-
-		//set output format
-		header("Content-Type: application/json");
-
-		$message = '';
-		$result = $this->getAccountCredentials($message);
-
-		if (!($result === FALSE)) {
-			//send the actual message
-			echo json_encode($message);
-		} else { //the process failed, so try with another email
-			ob_start();
-			include(dirname(__FILE__) . '/views/accountCredentialsPartial.php');
-			echo json_encode(ob_get_clean());
-		}
 	}
 
 	/**
@@ -586,19 +527,64 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 			
 			$this->activate($status_message);
 		}  
-		else if (!empty($_REQUEST['syc-get-account'])){
+		//check if the user want's to recover his account
+		else if (@$_REQUEST['syc-account'] === 'recover'){
 
-			//the Get Your's Now button was pressed
-			$message = '';
-			$result = $this->getAccountCredentials($message,@$_REQUEST['new-email']);
-
-			if (!($result === FALSE)) {
-				//send the actual message
-				$status_message = $message;
-			} else { //the process failed, so try with another email
+			//by default, show the form if we are here
+			$show_form = true;
+			if($_SERVER['REQUEST_METHOD'] == 'POST')
+			{
+				//try to recover if the user posted the form
+				$show_form = !$this->recover($this->getSecretKey(), @$_REQUEST['domain'], @$_REQUEST['email'], $status_message);
+			}
+			
+			//if we need to show the form
+			if($show_form)
+			{
+				//if there is a message, put the form on a new line
+				if(!empty($status_message))
+					$status_message .= "<br /><br />";
+				
 				ob_start();
-				include(dirname(__FILE__) . '/views/account-credentials-partial.php');
-				$status_message = ob_get_clean();
+				include(dirname(__FILE__) . '/views/account-recover-partial.php');
+				$status_message .= ob_get_clean();
+			}
+		}
+		else if (@$_REQUEST['syc-account'] === 'create'){
+			
+			//by default, show the form if we are here
+			$show_form = true;
+			if($_SERVER['REQUEST_METHOD'] == 'POST')
+			{
+				//first, check if the user has agreed to the terms and conditions
+				if(isset($_POST['syc-terms-agreement']))
+				{
+					//try to create the account if the user posted the form
+					if (!(($register = $this->register($this->getSecretKey(), @$_REQUEST['domain'], @$_REQUEST['email'], $status_message)) === false)) 
+					{
+						$this->setConfigValue('appKey', @$register['app_key']);
+						$this->setConfigValue('clientId', @$register['client_id']);
+                        
+						$this->setConfigValue("account_status", "active");
+						$show_form = false; //no need to show the register form anymore
+					}
+				}
+				else
+				{
+					$status_message = "Error. You must agree with the terms and conditions bellow";
+				}
+			}
+			
+			//if we need to show the form
+			if($show_form)
+			{
+				//if there is a message, put the form on a new line
+				if(!empty($status_message))
+					$status_message .= "<br /><br />";
+				
+				ob_start();
+				include(dirname(__FILE__) . '/views/account-create-partial.php');
+				$status_message .= ob_get_clean();
 			}
 		}
 
@@ -636,6 +622,9 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 
 			//set the button position
 			$this->setConfigValue("button_position", $_POST['button_position']);
+			
+			//set the button height
+			$this->setConfigValue("dont_set_height", empty($_POST['show_on_single_row']));
 
 			//set the button html
 			$this->setConfigValue("button_html", urldecode($_POST['button_html']));
@@ -691,6 +680,7 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 		$current_position = $this->getConfigValue("button_position");
 		$show_on_checkout = !$this->getConfigValue("hide_on_checkout");
 		$show_on_product = !$this->getConfigValue("hide_on_product");
+		$show_on_single_row = !$this->getConfigValue("dont_set_height");
 
 		$button_html = $this->getConfigValue("button_html");
 		$button_img = $this->getConfigValue("btn-img");
@@ -792,7 +782,7 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 
 	/**
 	 *
-	 * Abstract createTable
+	 * createTable
 	 * @param table
 	 * @param array columns
 	 * @param string @option

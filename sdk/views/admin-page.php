@@ -1,7 +1,10 @@
+<script type="text/javascript">
+  if(_gaq) _gaq.push(['_trackPageview', '/admin-view']);
+</script>
 <div class="wrap">
 <?php if($show_header):?>
     <h2>
-        <a href="http://www.shareyourcart.com" target="_blank" title="Shareyourcart" class="shareyourcart-logo">
+        <a href="http://www.shareyourcart.com" target="_blank" title="Shareyourcart" class="shareyourcart-logo" onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin-view/logo-click']);">
             <img src="<?php echo $this->createUrl(dirname(__FILE__).'/../img/shareyourcart-logo.png'); ?>"/>
         </a>
 		<div class="syc-slogan">Increase your social media exposure by 10%!</div>
@@ -19,7 +22,7 @@
 	</strong></p></div>
 	<?php endif; ?>
 	
-    <p><a href="http://www.shareyourcart.com" target="_blank" title="Shareyourcart&trade;">ShareYourCart&trade;</a> helps you get more customers by motivating satisfied customers to talk with their friends about your products. Each customer that promotes your products, via social media, will receive a coupon that they can apply to their shopping cart in order to get a small discount.</p>
+    <p><a href="http://www.shareyourcart.com" target="_blank" title="Shareyourcart&trade;" onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin-view/logo-click']);">ShareYourCart&trade;</a> helps you get more customers by motivating satisfied customers to talk with their friends about your products. Each customer that promotes your products, via social media, will receive a coupon that they can apply to their shopping cart in order to get a small discount.</p>
     
     <br />
     <div id="acount-options">      	
@@ -34,9 +37,9 @@
                     <?php endif;?>
                         <br />
                     <?php if($this->isActive()) : ?>
-                        <input type="submit" value="Disable" name="disable-API" class="api-button" />
+                        <input type="submit" value="Disable" name="disable-API" class="api-button" onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin-view/disable-click']);" />
                     <?php else :?>
-                        <input type="submit" value="Enable" name="enable-API" class="api-button" />
+                        <input type="submit" value="Enable" name="enable-API" class="api-button" onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin-view/enable-click']);" />
                     <?php endif;?>
                 </div>                
         <table class="form-table-api" name="shareyourcart_settings">
@@ -50,11 +53,11 @@
             </tr>
             <tr>
                 <td></td>
-                <td>These credentials are used to communicate with ShareYourCart&trade;. <a href="?<?php echo http_build_query(array_merge($_GET,array('syc-get-account'=>'true')),'','&')?>" id="account-recovery" class="api-link">Get yours now!</a></td>
+                <td><a href="?<?php echo http_build_query(array_merge($_GET,array('syc-account'=>'recover')),'','&')?>" class="api-link" onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin-view/recover-click']);">Can't access your account?</a> <strong>or</strong> New to ShareYourCart&trade;? <a href="?<?php echo http_build_query(array_merge($_GET,array('syc-account'=>'create')),'','&')?>" id="account-recovery" class="api-link" onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin-view/create-account-click']);">Create an account</a></td>
             </tr>
         </table>
        <?php echo $html;?>
-        <div class="submit"><input type="submit" name="syc-account-form" class="button" value="Save"></div>        
+        <div class="submit"><input type="submit" name="syc-account-form" class="button" value="Save" onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin-view/save-click']);"></div>        
 		</fieldset>			 
     </form>  
     </div>
@@ -66,7 +69,7 @@
  	 <form action="<?php echo $this->SHAREYOURCART_CONFIGURE; ?>" method="POST" id="configure-form" target="_blank">
        
         <div class="configure-button-container" align="center">
-            <input type="submit" value="Configure" id="configure-button" class="shareyourcart-button-orange" />
+            <input type="submit" value="Configure" id="configure-button" class="shareyourcart-button-orange" onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin-view/configure-click']);" />
             <input type="hidden" name="app_key" value="<?php echo $this->getAppKey(); ?>" />
             <input type="hidden" name="client_id" value="<?php echo $this->getClientId(); ?>" />
         </div>   
@@ -76,7 +79,7 @@
         <br />
 	<?php if($show_footer):?>	
 	<h2>Contact</h2>
-	<p>You can find help in our <a href="http://shareyourcart.uservoice.com" target="_blank" title="forum">forum</a>, or if you have a private question, you can <a href="http://www.shareyourcart.com/contact" target="_blank">contact us directly</a></p>
+	<p> If you've got 30 seconds, we'd <a href="http://shareyourcart.uservoice.com" target="_blank" title="forum" class="api-link" onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin-view/forum-click']);">love to know what ideal outcome you'd like ShareYourCart to help bring to your business</a>, or if you have a private question, you can <a href="http://www.shareyourcart.com/contact" target="_blank" class="api-link" onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin-view/contact-click']);">contact us directly</a></p>
 	<br />
 	<?php endif; ?>
 </div>

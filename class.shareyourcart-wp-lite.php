@@ -43,7 +43,7 @@ class ShareYourCartWPLite extends ShareYourCartWordpressPlugin {
 	*/
 	protected function getSecretKey()
 	{
-		return '2d8d8fe2-13d9-4545-9414-4e38fd4761d9';
+		return 'a0f41adf-8d07-4703-b141-977592ad098b';
 	}
 	
 	/*
