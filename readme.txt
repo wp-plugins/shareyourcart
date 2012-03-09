@@ -1,11 +1,11 @@
-=== ShareYourCart - Increase your social media exposure by 10%! for WP e-Commerce, eShop, WP eStore and others ===
-Plugin Name: ShareYourCart - Increase your social media exposure by 10%! for WP e-Commerce, eShop, WP eStore, wpStoreCart and others
+=== ShareYourCart - Share & Increase your social media exposure by 10%! for WP e-Commerce, eShop, WP eStore etc. ===
+Plugin Name: ShareYourCart - Share & Increase your social media exposure by 10%! for WP e-Commerce, eShop, WP eStore, wpStoreCart etc.
 Contributors: barandisolutions
 Donate link: http://www.shareyourcart.com/
 Tags: twitter, Facebook, tweet, affiliate, button, social, discount, coupon
 Requires at least: 3.0
 Tested up to: 3.3.1
-Stable tag: 1.5
+Stable tag: 1.6.1
 
 Increase by 10% the number of Facebook shares and Twitter tweets that your customers do about your business.
 This means ShareYourCart™ helps you get more customers by motivating satisfied customers to talk with their friends about your products. 
@@ -52,6 +52,10 @@ And the best thing is the entire process is automatic, and it simply works.
 Thus, you can focus on further building your business, and not on generating coupon codes.
 
 == Changelog ==
+= 1.6.1 =
+* Added two new smaller types of buttons ( light / dark ). What do you think?
+* Added multi-languagesupport
+ 
 = 1.5 =
 * Improved credential management. Now you have the option to recover your account directly in the admin, in case you lose them
 * Added a heigh to the button, so that it does not overlap anything bellow it, commonly found in FireFox
