@@ -5,7 +5,7 @@ Donate link: http://www.shareyourcart.com/
 Tags: twitter, Facebook, tweet, affiliate, button, social, discount, coupon
 Requires at least: 3.0
 Tested up to: 3.3.1
-Stable tag: 1.7.2
+Stable tag: 1.7.2.1
 
 Increase by 10% the number of Facebook shares and Twitter tweets that your customers do about your business.
 This means ShareYourCart™ helps you get more customers by motivating satisfied customers to talk with their friends about your products. 
@@ -24,6 +24,7 @@ The button is currently fully compatible with:
 * eShop v6.2.8+
 * WP eStore v3.4.9+
 * wpStoreCart v2.5.1+
+* WooCommerce v1.5.x+
 
 For other shopping carts, it will fallback to the lite Javascript code.
 
