@@ -119,6 +119,26 @@ class ShareYourCartWPStoreCart extends ShareYourCartWordpressPlugin {
 			}
 		}
 	}
+	
+	/**
+	*
+	* Return the jQuery sibling selector for the product button
+	*
+	*/
+	protected function getProductButtonPosition(){
+		$selector = parent::getProductButtonPosition();
+		return (!empty($selector) ? $selector : ".wpsc-button.wpsc-addtocart");
+	}
+	
+	/**
+	*
+	* Return the jQuery sibling selector for the cart button
+	*
+	*/
+	protected function getCartButtonPosition(){
+		$selector = parent::getCartButtonPosition();
+		return (!empty($selector) ? $selector : "#wpsc-total");
+	}
 
 	/**
 	 *
@@ -362,8 +382,6 @@ class ShareYourCartWPStoreCart extends ShareYourCartWordpressPlugin {
 		return $output.$result;
 	}
 }
-
-new ShareYourCartWPStoreCart();
 
 //TODO: see why this is not used
 add_action(ShareYourCartWordpressPlugin::getPluginFile(), array('ShareYourCartWPStoreCart','uninstallHook'));

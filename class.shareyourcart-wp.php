@@ -16,7 +16,7 @@ if(!class_exists('ShareYourCartWordpressPlugin',false)){
 	abstract class ShareYourCartWordpressPlugin extends ShareYourCartBase {
 
 		protected static $_INSTANCES = array();
-		protected static $_VERSION = 2;
+		protected static $_VERSION = 3;
 		protected $_PLUGIN_PATH;
 
 		/**
@@ -207,7 +207,7 @@ if(!class_exists('ShareYourCartWordpressPlugin',false)){
 
 			//if the cart is not loaded, do not load this plugin further
 			if(!$this->isCartActive()) return;
-//if(!$this->existsTable($this->getTableName('shareyourcart_coupons'))) throw new Exception('abc');
+
 			add_action('wp_head',                                   array(&$this,'showPageHeader'));
 			add_action('admin_menu',                                array(&$this,'showAdminMenu'));
 
@@ -368,9 +368,7 @@ if(!class_exists('ShareYourCartWordpressPlugin',false)){
 			//is active
 			if(!$this->isCartActive()) {
 
-				header("HTTP/1.0 403");
-				echo "Shopping Cart is not active";
-				exit;
+				throw new Exception(SyC::t('sdk','Shopping Cart is not active'));
 			}
 
 			parent::couponCallback();

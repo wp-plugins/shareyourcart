@@ -23,6 +23,7 @@ class ShareYourCartAPI {
     protected     $SHAREYOURCART_API_CREATE;
     protected     $SHAREYOURCART_API_VALIDATE;
 	protected     $SHAREYOURCART_API_STATUS;
+	protected     $SHAREYOURCART_API_TRANSLATION;
     protected     $SHAREYOURCART_CONFIGURE;
     protected     $SHAREYOURCART_BUTTON_JS;
 	protected     $SHAREYOURCART_BUTTON_URL;
@@ -40,7 +41,7 @@ class ShareYourCartAPI {
 		if(method_exists ($this,'getSecretKey')){
 			$secretKey = $this->getSecretKey();
 			if(empty($secretKey)){
-				throw new Exception("You must specify a valid secret key");
+				throw new Exception(SyC::t('sdk',"You must specify a valid secret key"));
 			}
 			
 			//check if the secret key is a sandbox one
@@ -59,6 +60,7 @@ class ShareYourCartAPI {
         $this->SHAREYOURCART_API_CREATE     = $this->SHAREYOURCART_API.'/session/create';
         $this->SHAREYOURCART_API_VALIDATE   = $this->SHAREYOURCART_API.'/session/validate';
         $this->SHAREYOURCART_API_STATUS     = $this->SHAREYOURCART_API.'/sdk';
+		$this->SHAREYOURCART_API_TRANSLATION = $this->SHAREYOURCART_API.'/sdk/translation';
         $this->SHAREYOURCART_CONFIGURE      = $this->SHAREYOURCART_API.'/configure';   
 		$this->SHAREYOURCART_BUTTON_JS      = $this->SHAREYOURCART_API.'/js/'.($is_live ? 'button.js' : 'button_sandbox.js');
 		$this->SHAREYOURCART_BUTTON_URL     = $this->SHAREYOURCART_API.'/button';
@@ -352,6 +354,41 @@ class ShareYourCartAPI {
 		 // Decode the result
         return json_decode($response, true);
 	}
+	
+	/**
+	*
+	* Returns an array of messages for the SDK, in the specified language
+	*
+	*/
+	public function getSDKTranslation($lang, &$message = null)
+	{
+		$params = array('lang' => $lang);
+		
+		//make the API call
+        $session = curl_init($this->SHAREYOURCART_API_TRANSLATION);
+
+        // Tell curl to use HTTP POST
+        curl_setopt($session, CURLOPT_POST, true);
+        // Tell curl that this is the body of the POST
+        curl_setopt($session, CURLOPT_POSTFIELDS, http_build_query($params,'','&'));
+        // Tell curl not to return headers, but do return the response
+        curl_setopt($session, CURLOPT_HEADER, false);
+        curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($session);
+        $httpCode = curl_getinfo($session, CURLINFO_HTTP_CODE);
+        curl_close($session);
+        
+        // Notify the caller
+        if($httpCode != 200) {
+            if(isset($message)) $message = $response;
+			
+			return false;
+        }
+		
+		 // Decode the result
+        return json_decode($response, true);
+	}
 }
 
 
@@ -364,6 +401,7 @@ class SyC
 {
 	static $_messages;
 	static $_language = 'en';
+	static $loadLanguage = array('SyC','loadFileLanguage'); //variable that holds the name of the function used to load a particular language
 	
 	/**
 	*
@@ -377,6 +415,30 @@ class SyC
 		self::$_messages = null;	
 	}
 	
+	/**
+	*
+	* Get the language that is currently loaded
+	*
+	*/
+	public static function getLanguage(){
+		return self::$_language;
+	}
+	
+	/**
+	* Return the checksum of the currently loaded translation
+	*/
+	public static function getLanguageChecksum($category = 'sdk')
+	{
+		//load the translation from file if not done so
+		if(!isset(self::$_messages)){
+			
+			//load the language
+			self::$_messages = call_user_func(self::$loadLanguage,self::$_language,$category);
+		}
+		
+		return md5(json_encode(self::$_messages));
+	}
+	
 	/*
 	* Translate the specified message
 	* 
@@ -386,16 +448,8 @@ class SyC
 		//load the translation from file if not done so
 		if(!isset(self::$_messages)){
 			
-			//The language is the folder name, and the category is the name of the file
-			$messageFile = dirname(__FILE__).DIRECTORY_SEPARATOR.'messages'.DIRECTORY_SEPARATOR.self::$_language.DIRECTORY_SEPARATOR.$category.'.php';
-			
-			if(is_file($messageFile))
-			{
-				self::$_messages=include($messageFile);
-			}
-			
-			//make sure we have an array for this variable
-			if(!is_array(self::$_messages)) self::$_messages=array();
+			//load the language
+			self::$_messages = call_user_func(self::$loadLanguage,self::$_language,$category);
 		}
 		
 		//check if the text has a valid translation
@@ -407,6 +461,41 @@ class SyC
 		return $params!==array() ? strtr($message,$params) : $message;
 	}
 	
+	/**
+	*
+	* change the language loader method
+	*
+	*/
+	public static function setLanguageLoader($loader)
+	{
+		//make sure the loader is ok
+		if(!is_callable($loader))
+			throw new Exception(SyC::t('sdk',"The language loader is not a valid callback"));
+		
+		//reset the old messages, so that they are reloaded with the new loader
+		self::$_messages = null;
+	}
+	
+	/**
+	*
+	* Function to load a language from the hard-drive.
+	*
+	*/
+	public static function loadFileLanguage($lang, $category)
+	{
+		//The language is the folder name, and the category is the name of the file
+		$messageFile = dirname(__FILE__).DIRECTORY_SEPARATOR.'messages'.DIRECTORY_SEPARATOR.$lang.DIRECTORY_SEPARATOR.$category.'.php';
+			
+		if(is_file($messageFile))
+		{
+			$messages=include($messageFile);
+		}
+			
+		//make sure we have an array for this variable
+		if(!is_array($messages)) $messages=array();
+		
+		return $messages;
+	}
 	
 	function relativepath($from, $to, $ps = '/' ,$ds = DIRECTORY_SEPARATOR)
 	{	
@@ -473,6 +562,14 @@ class SyC
 		), $src);
 	}
 
+	/**
+	* returns TRUE if haystack starts with needle
+	*/
+	function startsWith($haystack, $needle)
+	{
+		$length = strlen($needle);
+		return (substr($haystack, 0, $length) === $needle);
+	}
 }
 
 } //END IF

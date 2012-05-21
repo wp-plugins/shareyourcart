@@ -39,6 +39,26 @@ class ShareYourCartWPECommerce extends ShareYourCartWordpressPlugin {
 		return 'f41b15ac-b497-4a08-9840-99c057195a1a';
 	}
 	
+	/**
+	*
+	* Return the jQuery sibling selector for the product button
+	*
+	*/
+	protected function getProductButtonPosition(){
+		$selector = parent::getProductButtonPosition();
+		return (!empty($selector) ? $selector : ".wpsc_product_price");
+	}
+	
+	/**
+	*
+	* Return the jQuery sibling selector for the cart button
+	*
+	*/
+	protected function getCartButtonPosition(){
+		$selector = parent::getCartButtonPosition();
+		return (!empty($selector) ? $selector : ".wpsc_total_amount_before_shipping .pricedisplay");
+	}
+	
 	/*
 	*
 	* Extend the base class implementation
@@ -284,8 +304,6 @@ class ShareYourCartWPECommerce extends ShareYourCartWordpressPlugin {
 		wpsc_coupon_price();
 	}
 }
-
-new ShareYourCartWPECommerce();
 
 //TODO: see why this is not used
 add_action(ShareYourCartWordpressPlugin::getPluginFile(), array('ShareYourCartWPECommerce','uninstallHook'));

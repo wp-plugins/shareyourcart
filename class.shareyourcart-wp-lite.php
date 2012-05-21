@@ -194,8 +194,6 @@ class ShareYourCartWPLite extends ShareYourCartWordpressPlugin {
 	}
 }
 
-new ShareYourCartWPLite();
-
 //TODO: see why this is not used
 add_action(ShareYourCartWordpressPlugin::getPluginFile(), array('ShareYourCartWPLite','uninstallHook'));
 

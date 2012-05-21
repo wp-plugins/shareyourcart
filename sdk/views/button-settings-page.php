@@ -128,6 +128,18 @@
                                 <input class="buttonCheckbox" name="show_on_checkout" <?php echo $show_on_checkout ? 'checked="checked"' : ''; ?> type='checkbox' onclick=" if(_gaq) _gaq.push(['_trackPageview', '/admin/button-settings-view/toggle-show-on-checkout-click']);"><?php echo SyC::t('sdk','Checkout page'); ?></input>                        
                             </td>
                         </tr>
+						<tr>
+                            <th scope="row" valign="top"><?php echo SyC::t('sdk','Position product button after: '); ?></th>
+                            <td>
+                                <input name="product_button_position" class="regular-text" value="<?php echo $this->getProductButtonPosition(); ?>" /><p><?php echo SyC::t('sdk','<strong>jQuery selector</strong>. Start with <strong>{elem}</strong> to position the button before the actual object',array('{elem}' => "/*before*/")); ?></p>
+                            </td>
+                        </tr>
+						 <tr>
+                            <th scope="row" valign="top"><?php echo SyC::t('sdk','Position cart button after: '); ?></th>
+                            <td>
+                                <input name="cart_button_position" class="regular-text" value="<?php echo $this->getCartButtonPosition(); ?>" /><p><?php echo SyC::t('sdk','<strong>jQuery selector</strong>. Start with <strong>{elem}</strong> to position the button before the actual object',array('{elem}' => "/*before*/")); ?></p>
+                            </td>
+                        </tr>
                     </table>
               
                 

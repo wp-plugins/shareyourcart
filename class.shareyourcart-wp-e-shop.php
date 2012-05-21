@@ -38,6 +38,16 @@ class ShareYourCartWPEShop extends ShareYourCartWordpressPlugin {
 	{
 		return 'e77348b4-f280-4e8a-bb0f-5f409bc72a55';
 	}
+	
+	/**
+	*
+	* Return the jQuery sibling selector for the cart button
+	*
+	*/
+	protected function getCartButtonPosition(){
+		$selector = parent::getCartButtonPosition();
+		return (!empty($selector) ? $selector : "/*before*/ .cartopt p");
+	}
 
 	/*
 	 *
@@ -118,7 +128,7 @@ class ShareYourCartWPEShop extends ShareYourCartWordpressPlugin {
 	protected function isSingleProduct(){
 		global $wp_query;
 
-		return isset($_REQUEST['p']) ;
+		return isset($_REQUEST['p']) ;  //TODO: this is not working. it will break when permalinks are used
 	}
 
 	/*
@@ -296,7 +306,7 @@ class ShareYourCartWPEShop extends ShareYourCartWordpressPlugin {
 		if(!empty($_SESSION['eshopcart'.$blog_id])&&!get_option('_shareyourcart_hide_on_checkout'))
 		{
 
-			$output = $this->getButton();
+			$output = $this->getCartButton();
 		}
 
 		switch ($code)
@@ -315,8 +325,6 @@ class ShareYourCartWPEShop extends ShareYourCartWordpressPlugin {
 		return $output .$result ;
 	}
 }
-
-new ShareYourCartWPEShop();
 
 //TODO: see why this is not used
 add_action(ShareYourCartWordpressPlugin::getPluginFile(), array('ShareYourCartWPEShop','uninstallHook'));

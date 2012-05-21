@@ -1,4 +1,18 @@
-<?php if(!class_exists('ShareYourCartBase',false)) die('Access Denied'); ?>
+<?php if(!class_exists('ShareYourCartBase',false)) die('Access Denied'); 
+
+//in case we need to refresh the page
+if($refresh)
+{
+	//recreate the url ( but before that make sure there is no syc-account parameter in it )
+	unset($_GET['syc-account']);
+	$url = '?'.http_build_query($_GET,'','&');
+		
+	@header("HTTP/1.1 302 Found");
+	@header("Location: $url");
+	echo "<meta http-equiv=\"refresh\" content=\"0; url=$url\">"; //it can happen that the headers have allready been sent, so use the html version as well
+	exit;
+}
+?>
 <script type="text/javascript">
   if(_gaq) _gaq.push(['_trackPageview', '/admin-view']);
 </script>
@@ -20,9 +34,22 @@
     </h2>
 	<?php endif; ?>
 
-    <?php if(!empty($status_message)): ?>
+	<?php if(!empty($status_message) || !empty($error_message)): ?>
 	<div class="updated settings-error"><p><strong>
-		<?php echo $status_message; ?>
+		<?php 
+			$message = @$error_message; 
+		
+			//is there a status message?
+			if(!empty($status_message))
+			{
+				//put the status message on a new line
+				if(!empty($message)) $message .= "<br /><br />";
+				
+				$message .= $status_message;
+			}
+		
+			echo $message; 
+		?>
 	</strong></p></div>
 	<?php endif; ?>
 	

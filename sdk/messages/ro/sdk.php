@@ -19,7 +19,7 @@
  * @version $Id: $
  */
 return array (
-  'API Status:' => '',
+  'API Status:' => 'Status API:',
   'App Key' => '',
   'Blue' => '',
   'Build your own HTML button' => '',

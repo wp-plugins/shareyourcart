@@ -39,6 +39,16 @@ class ShareYourCartEStore extends ShareYourCartWordpressPlugin {
 		return '9d5db5f3-ec0a-4222-957a-462b90116d74';
 	}
 	
+	/**
+	*
+	* Return the jQuery sibling selector for the cart button
+	*
+	*/
+	protected function getCartButtonPosition(){
+		$selector = parent::getCartButtonPosition();
+		return (!empty($selector) ? $selector : "/*before*/ .eStore_empty_cart_button");
+	}
+	
 	/*
 	*
 	* Extend the base class implementation
@@ -415,8 +425,6 @@ class ShareYourCartEStore extends ShareYourCartWordpressPlugin {
 		eStore_apply_discount($coupon_code);
 	}
 }
-
-new ShareYourCartEStore();
 
 //TODO: see why this is not used
 add_action(ShareYourCartWordpressPlugin::getPluginFile(), array('ShareYourCartEStore','uninstallHook'));

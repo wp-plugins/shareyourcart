@@ -4,8 +4,8 @@ Contributors: barandisolutions
 Donate link: http://www.shareyourcart.com/
 Tags: twitter, Facebook, tweet, affiliate, button, social, discount, coupon
 Requires at least: 3.0
-Tested up to: 3.3.1
-Stable tag: 1.7.2.1
+Tested up to: 3.3.2
+Stable tag: 1.8.3
 
 Increase by 10% the number of Facebook shares and Twitter tweets that your customers do about your business.
 This means ShareYourCart™ helps you get more customers by motivating satisfied customers to talk with their friends about your products. 
@@ -25,8 +25,9 @@ The button is currently fully compatible with:
 * WP eStore v3.4.9+
 * wpStoreCart v2.5.1+
 * WooCommerce v1.5.x+
+* TheCartPress v1.x+
 
-For other shopping carts, it will fallback to the lite Javascript code.
+For other shopping carts, it will fallback to the Lite implementation.
 
 = Known Issues =
 * WP e-Commerce v3.7 as well as eShop v6.2.8+ do not show the ShareYourCart button in the product page
@@ -53,6 +54,13 @@ And the best thing is the entire process is automatic, and it simply works.
 Thus, you can focus on further building your business, and not on generating coupon codes.
 
 == Changelog ==
+= 1.8.3 =
+* Added support for TheCartPress 1.x (Thanks to the TheCartPress team for helping)
+* Improved positioning of the button so that it allows the user to better engage with the shop
+* Added Debug mode for easier debugging
+* Language is set according to the one set in your ShareYourCart account
+* Fixed WooCommerce minor issues, like button not appearing of product's page, or sending of wrong product link to the API
+
 = 1.7.2 =
 * Added support for WooCommerce 1.5.x
 * The custom button images are now saved in the Wordpress Uploads folder

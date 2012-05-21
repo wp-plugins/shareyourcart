@@ -4,7 +4,7 @@
 Plugin Name: ShareYourCart
 Plugin URI: http://www.shareyourcart.com
 Description: <strong>Increase your social media exposure by 10%!</strong> ShareYourCart helps you get more customers by motivating satisfied clients to talk about your products. 
-Version: 1.7.2.1
+Version: 1.8.3
 Author: Barandi Solutions
 Author URI: http://www.barandisolutions.com
 License: GPLv2 or later
@@ -31,8 +31,19 @@ require_once("class.shareyourcart-wp-e-commerce.php");
 require_once("class.shareyourcart-estore.php");
 require_once("class.shareyourcart-wp-e-shop.php");
 require_once("class.shareyourcart-wpstorecart.php");
-require_once("class.shareyourcart-wp-woo-commerce.php");
+require_once("class.shareyourcart-wp-woocommerce.php");
+require_once("class.shareyourcart-thecartpress.php");
 
 //make sure this is the last one loaded
 require_once("class.shareyourcart-wp-lite.php");
 
+
+new ShareYourCartWPECommerce();
+new ShareYourCartEStore();
+new ShareYourCartWPEShop();
+new ShareYourCartWPStoreCart();
+new ShareYourCartWooCommerce();
+new ShareYourCartTheCartPress();
+
+//make sure this is the last one loaded
+new ShareYourCartWPLite();
