@@ -1,5 +1,5 @@
-=== ShareYourCart - Share & Increase your social media exposure by 10%! for WP e-Commerce, eShop, WP eStore etc. ===
-Plugin Name: ShareYourCart - Share & Increase your social media exposure by 10%! for WP e-Commerce, eShop, WP eStore, wpStoreCart etc.
+=== ShareYourCart ===
+Plugin Name: ShareYourCart
 Contributors: barandisolutions
 Donate link: http://www.shareyourcart.com/
 Tags: twitter, Facebook, tweet, affiliate, button, social, discount, coupon
