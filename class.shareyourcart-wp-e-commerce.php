@@ -178,6 +178,7 @@ class ShareYourCartWPECommerce extends ShareYourCartWordpressPlugin {
 			while (wpsc_have_cart_items()) : wpsc_the_cart_item();
 
 			$params['cart'][] = array(
+			"item_unique_id" => wpsc_cart_item_name(),   //the unique id for wp e-commerce is it's name
 			"item_name" => wpsc_cart_item_name(),
 			"item_url" => wpsc_cart_item_url(),
 			"item_price" => function_exists('wpsc_cart_single_item_price') ? wpsc_cart_single_item_price() : wpsc_cart_item_price(),
@@ -213,6 +214,7 @@ class ShareYourCartWPECommerce extends ShareYourCartWordpressPlugin {
 			while (wpsc_have_products()) : wpsc_the_product();
 			
 			$params['cart'][] = array(
+			"item_unique_id" => wpsc_the_product_title(), //the unique id for wp e-commerce is it's name
 			"item_name" => wpsc_the_product_title(),
 			"item_description" => substr(wpsc_the_product_description(), 0, 255),
 			"item_url" => wpsc_the_product_permalink(),
@@ -258,7 +260,7 @@ class ShareYourCartWPECommerce extends ShareYourCartWordpressPlugin {
      * 	 Insert coupon in database
      *
      */
-	protected function saveCoupon($token, $coupon_code, $coupon_value, $coupon_type) {
+	protected function saveCoupon($token, $coupon_code, $coupon_value, $coupon_type, $product_unique_ids = array()) {
 		global $wpdb;
 		
 		switch($coupon_type)
@@ -267,6 +269,16 @@ class ShareYourCartWPECommerce extends ShareYourCartWordpressPlugin {
 			case 'percent': $discount_type = 1; break;
 			case 'free_shipping' : $discount_type = 2; break;
 			default : $discount_type = 0;
+		}
+		
+		//for wp E-commerce, the unique_ids are actually the item names
+		$conditions = array();
+		foreach($product_unique_ids as $product_name){
+			$conditions[] = array(
+				'property' => 'item_name',
+				'logic' => 'equal',
+				'value' => $product_name,
+			);
 		}
 
 		$coupon_data = array(
@@ -279,8 +291,10 @@ class ShareYourCartWPECommerce extends ShareYourCartWordpressPlugin {
 			'every_product' => 0,
 			'start' => date('Y-m-d', strtotime("now")),
 			'expiry' => date('Y-m-d', strtotime("now +1 day")),
-			'condition' => 'a:0:{}',
+			'condition' => serialize($conditions),
 		);
+		
+		
 
 		if($wpdb->insert(WPSC_TABLE_COUPON_CODES,$coupon_data) === FALSE)
 		{
@@ -289,7 +303,7 @@ class ShareYourCartWPECommerce extends ShareYourCartWordpressPlugin {
 		}
 		
 		//call the base class method
-		parent::saveCoupon($token, $coupon_code, $coupon_value, $coupon_type);
+		parent::saveCoupon($token, $coupon_code, $coupon_value, $coupon_type,$product_unique_ids);
 	}
 	
 	/**

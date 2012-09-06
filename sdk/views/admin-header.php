@@ -1,5 +1,5 @@
 <?php if(!class_exists('ShareYourCartBase',false)) die('Access Denied'); ?>
-<link rel="stylesheet" type="text/css" href="<?php echo $this->createUrl(dirname(__FILE__).'/../css/admin-style.css'); ?>" />
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getUrl(dirname(__FILE__).'/../css/admin-style.css'); ?>" />
 
 <?php //check if there is an admin-style outside of the SDK, and include that one as well
 
@@ -9,7 +9,7 @@ $_file_ = dirname($_reflection_->getFileName())."/css/admin-style.css";
 //check if there is a file in the specified location
 if(file_exists($_file_)):?>
 		
-<link rel="stylesheet" type="text/css" href="<?php echo $this->createUrl($_file_); ?>" />
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getUrl($_file_); ?>" />
 
 <?php endif; ?>
 

@@ -439,6 +439,14 @@ class SyC
 		return md5(json_encode(self::$_messages));
 	}
 	
+	/**
+	* Reload the language
+	*/
+	public static function reloadLanguage()
+	{
+		self::$_messages = null;
+	}
+	
 	/*
 	* Translate the specified message
 	* 
@@ -472,6 +480,8 @@ class SyC
 		if(!is_callable($loader))
 			throw new Exception(SyC::t('sdk',"The language loader is not a valid callback"));
 		
+		self::$loadLanguage = $loader;
+		
 		//reset the old messages, so that they are reloaded with the new loader
 		self::$_messages = null;
 	}
@@ -486,6 +496,7 @@ class SyC
 		//The language is the folder name, and the category is the name of the file
 		$messageFile = dirname(__FILE__).DIRECTORY_SEPARATOR.'messages'.DIRECTORY_SEPARATOR.$lang.DIRECTORY_SEPARATOR.$category.'.php';
 			
+		$messages = null;
 		if(is_file($messageFile))
 		{
 			$messages=include($messageFile);
@@ -569,6 +580,14 @@ class SyC
 	{
 		$length = strlen($needle);
 		return (substr($haystack, 0, $length) === $needle);
+	}
+	
+	/**
+	* returns TRUE if haystack ends with needle
+	*/
+	function endsWith($haystack, $needle)
+	{
+		return (substr($haystack, strlen($haystack) - strlen($needle)) === $needle);
 	}
 }
 

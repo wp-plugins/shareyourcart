@@ -5,7 +5,7 @@ Donate link: http://www.shareyourcart.com/
 Tags: twitter, Facebook, tweet, affiliate, button, social, discount, coupon
 Requires at least: 3.0
 Tested up to: 3.3.2
-Stable tag: 1.8.3
+Stable tag: 1.9.4
 
 Increase by 10% the number of Facebook shares and Twitter tweets that your customers do about your business.
 This means ShareYourCart™ helps you get more customers by motivating satisfied customers to talk with their friends about your products. 
@@ -54,6 +54,11 @@ And the best thing is the entire process is automatic, and it simply works.
 Thus, you can focus on further building your business, and not on generating coupon codes.
 
 == Changelog ==
+= 1.9.4 =
+* Upgraded to SDK 1.9
+* The ShareYourCart Button now appears on WooCommerce Variable Product pages
+* Fixed: image is not shared for WooCommerce Products
+
 = 1.8.3 =
 * Added support for TheCartPress 1.x (Thanks to the TheCartPress team for helping)
 * Improved positioning of the button so that it allows the user to better engage with the shop

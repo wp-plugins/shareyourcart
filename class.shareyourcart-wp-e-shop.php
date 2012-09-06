@@ -221,7 +221,7 @@ class ShareYourCartWPEShop extends ShareYourCartWordpressPlugin {
 	 * 	 Insert coupon in database
 	 *
 	 */
-	protected function saveCoupon($token, $coupon_code, $coupon_value, $coupon_type) {
+	protected function saveCoupon($token, $coupon_code, $coupon_value, $coupon_type, $product_unique_ids = array()) {
 		global $wpdb, $blog_id, $eshopcartarray,$eshopoptions, $shiparray, $post;
 
 		if(!isset($_REQUEST['p'])) //there is no product specified, so look at the shopping cart

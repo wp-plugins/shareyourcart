@@ -16,7 +16,7 @@ if(!class_exists('ShareYourCartWordpressPlugin',false)){
 	abstract class ShareYourCartWordpressPlugin extends ShareYourCartBase {
 
 		protected static $_INSTANCES = array();
-		protected static $_VERSION = 3;
+		protected static $_VERSION = 4;
 		protected $_PLUGIN_PATH;
 
 		/**

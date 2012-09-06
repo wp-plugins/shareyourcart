@@ -39,7 +39,8 @@ class ShareYourCartWooCommerce extends ShareYourCartWordpressPlugin{
       
       add_action('init', array(&$this, 'processInit'));
 	  
-	  add_action( 'woocommerce_simple_add_to_cart', array(&$this,'showProductButton'), 40 ); //make sure it appears AFTER the addToCart button
+	  add_action('woocommerce_simple_add_to_cart', array(&$this,'showProductButton'), 40 ); //make sure it appears AFTER the addToCart button
+	  add_action('woocommerce_after_add_to_cart_button', array(&$this,'showProductButton'));
       add_action('woocommerce_cart_contents', array(&$this,'showCartButton'));
 	}
 	
@@ -71,7 +72,7 @@ class ShareYourCartWooCommerce extends ShareYourCartWordpressPlugin{
       return is_singular('product');
     }
     
-    public function saveCoupon($token, $coupon_code, $coupon_value, $coupon_type){
+    protected function saveCoupon($token, $coupon_code, $coupon_value, $coupon_type, $product_unique_ids = array()) {
 	
 		// Create coupon
 		$post_id = $this->_saveCouponPost($coupon_code);
@@ -194,12 +195,23 @@ class ShareYourCartWooCommerce extends ShareYourCartWordpressPlugin{
     private function _getProductDetails($product_id){
         $product = new WC_Product($product_id);
 
+		//WooCommerce actually echoes the image
         ob_start();
-
         $product->get_image();
-
         $image = ob_get_clean();
-      
+		
+		//check is image actually a HTML img entity
+		if(($doc = DomDocument::loadHTML($image)) !== FALSE)
+		{
+			$imageTags =  $doc->getElementsByTagName('img');
+			if($imageTags->length >0 )
+				$src =  $imageTags->item(0)->getAttribute('src');
+			
+			//replace image only if src has been set
+			if (!empty($src))
+				$image = $src;
+		}
+
         return array(
             "item_name"        => $product->get_title(),
             "item_description" => $product->post->post_excerpt,

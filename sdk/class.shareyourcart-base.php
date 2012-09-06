@@ -17,7 +17,7 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 
 	//this array is used to hold function calls between different instances of this class
 	private static $_SINGLE_FUNCTIONS_CALLS = array();
-	private static $_SDK_VERSION = '1.8';  //the first one is the SDK main version, while the second one is it's revision
+	private static $_SDK_VERSION = '1.9';  //the first one is the SDK main version, while the second one is it's revision
 	protected static $_DB_VERSION = '1.1';
 	protected $SDK_ANALYTICS = true;
 	
@@ -107,6 +107,15 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 	*/
 	protected abstract function isSingleProduct();
 
+	/**
+	*
+	* Return FALSE if the curent single product is out of stock, or not
+	*
+	*/
+	public function isOutOfStock(){
+		return FALSE;
+	}
+	
 	/**
 	 *
 	 * Return the URL to be called when the button is pressed
@@ -388,12 +397,24 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 		//create a new session
 		$data = parent::startSession($params);
 
+		//reset the Location, as the following code might give an error
+		//and the developer needs to be aware of it
+		$headers = headers_list();
+		header('Location:'); 
+
 		//save session details
 		$this->insertRow($this->getTableName('shareyourcart_tokens'), $data);
 		
 		//we can't rely on the fact that the row has been inserted, so check!
 		if($this->getSessionId($data['token']) === null)
 			throw new Exception(SyC::t('sdk','Token cannot be saved. Check your "{table_name}" table permissions.', array('{table_name}' => $this->getTableName('shareyourcart_tokens'))));
+
+
+		//since everything is ok, resume the Location header
+		foreach($headers as $header)
+		{
+			header($header);
+		}
 
 		return true;
 	}
@@ -458,11 +479,11 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 		'current_button_type' => $this->getConfigValue("button_type"),
 		'button_html' => $this->getConfigValue("button_html"),
 		
-		'button_img' => $this->getConfigValue("btn-img"),
+		'button_img' => $this->getUrl($this->getConfigValue("btn-img")),
 		'button_img_width' => $this->getConfigValue("btn-img-width"),
 		'button_img_height' => $this->getConfigValue("btn-img-height"),
 		
-		'button_img_hover' => $this->getConfigValue("btn-img-h"),
+		'button_img_hover' => $this->getUrl($this->getConfigValue("btn-img-h")),
 		'button_img_hover_width' => $this->getConfigValue("btn-img-h-width"),
 		'button_img_hover_height' => $this->getConfigValue("btn-img-h-height"),
 
@@ -509,7 +530,7 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 	 */
 	public function getProductButton() {
 
-		if($this->isSingleProduct() && !$this->getConfigValue('hide_on_product')){
+		if($this->isSingleProduct() && !$this->getConfigValue('hide_on_product') && !$this->isOutOfStock()){
 
 			return	$this->getButton($this->getProductButtonPosition());
 		}
@@ -741,7 +762,7 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 		}
 		
 		//make sure there is a session variable setup
-		session_start();
+		@session_start();
 		
 		//since switching the API status has a great impact on how the UI looks, refresh the page
 		//just to make sure the UI is using the latest value
@@ -829,7 +850,8 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 			if($_FILES["button-img"]["name"]!='') {
 
 				$target_path = $this->getUploadDir();
-
+				if(!SyC::endsWith($target_path,'/')) $target_path .= '/'; //make sure that the path has a / in it's end
+				
 				$target_path = $target_path . 'button-img.png';
 
 				if(file_exists($target_path)) unlink($target_path);
@@ -839,14 +861,20 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 				if (move_uploaded_file($_FILES['button-img']['tmp_name'], $target_path))
 				{
 					//set the button img
-					$this->setConfigValue("btn-img", $this->createUrl($target_path));
+					$this->setConfigValue("btn-img", $this->getUrl($target_path));
 					$this->setConfigValue("btn-img-width", $width);
 					$this->setConfigValue("btn-img-height", $height);
+				}
+				else
+				{
+					//upload failed, so notify the user
+					throw new Exception(SyC::t('sdk','Cannot upload image to directory {directory}. Check the permissions',array('{directory}',$this->getUploadDir())));
 				}
 			}
 
 			if($_FILES["button-img-hover"]["name"]!='') {
 				$target_path = $this->getUploadDir();
+				if(!SyC::endsWith($target_path,'/')) $target_path .= '/'; //make sure that the path has a / in it's end
 
 				$target_path = $target_path . 'btn-img-hover.png';
 
@@ -857,9 +885,14 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 				if(move_uploaded_file($_FILES['button-img-hover']['tmp_name'], $target_path))
 				{
 					//set the show'
-					$this->setConfigValue("btn-img-h", $this->createUrl($target_path));
+					$this->setConfigValue("btn-img-h", $this->getUrl($target_path));
 					$this->setConfigValue("btn-img-h-width", $width);
 					$this->setConfigValue("btn-img-h-height", $height);
+				}
+				else
+				{
+					//upload failed, so notify the user
+					throw new Exception(SyC::t('sdk','Cannot upload image to directory {directory}. Check the permissions',array('{directory}',$this->getUploadDir())));
 				}
 			}
 
@@ -876,13 +909,13 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 			'show_on_single_row' => !$this->getConfigValue("dont_set_height"),
 
 			'button_html' => $this->getConfigValue("button_html"),
-			'button_img' => $this->getConfigValue("btn-img"),
-			'button_img_hover' => $this->getConfigValue("btn-img-h"),
+			'button_img' => $this->getUrl($this->getConfigValue("btn-img")),
+			'button_img_hover' => $this->getUrl($this->getConfigValue("btn-img-h")),
 			
 			'html' => $html,
 			'show_header' => $show_header,
 			'show_footer' => $show_footer,
-			'status_message' => $status_message,
+			'status_message' => @$status_message,
 		));
 	}
 
@@ -962,7 +995,7 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 			$this->assertCouponIsValid($_POST['token'], $_POST['coupon_code'], $_POST['coupon_value'], $_POST['coupon_type']);
 
 			//save the coupon
-			$this->saveCoupon($_POST['token'], $_POST['coupon_code'], $_POST['coupon_value'], $_POST['coupon_type']);
+			$this->saveCoupon($_POST['token'], $_POST['coupon_code'], $_POST['coupon_value'], $_POST['coupon_type'], (isset($_POST['product_unique_ids']) && is_array($_POST['product_unique_ids']) ? $_POST['product_unique_ids'] : array()));
 
 			//check if the coupon is intended to be applied to the current cart
 			if (empty($_POST['save_only'])) {
@@ -984,7 +1017,7 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 	 * @param null
 	 * @return boolean
 	 */
-	protected function saveCoupon($token, $coupon_code, $coupon_value, $coupon_type) {
+	protected function saveCoupon($token, $coupon_code, $coupon_value, $coupon_type, $product_unique_ids = array()) {
 
 		//add the coupon id in shareyourcart coupons table
 		$data = array(
@@ -1101,6 +1134,42 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 		else
 			require($_viewFile_);
 	}
+	
+	/**
+	*
+	* This function is used to make sure that the created url returns a proper scheme
+	*
+	*/
+	protected function getUrl($file){
+	
+		//test if the files is a url, as one migt send it that way
+		$parts = parse_url($file);
+		$is_url = is_array($parts) && isset($parts['scheme']);
+	
+		//if this is not a url, create one for it
+		if(!$is_url)
+		{
+			//as we can't control what if the developers
+			//will take care of the HTTP / HTTPS matching,
+			$url = $this->createUrl($file);
+		}
+		else
+		{
+			$url = $file;
+		}
+	
+		//do it here. the problem is loading an insecure object over a secure page, so check for this situation
+		
+		if( (isset($_SERVER['HTTPS']) && !strcasecmp($_SERVER['HTTPS'],'on')) && //the page is a secure one
+		SyC::startsWith($url,'http://') //the created url is an insecure one, adjust it
+		)
+		{
+			$url = "https://".substr($url, 7);
+		}
+		
+		return $url;
+	}
+ 
 
 	/**
 	*
@@ -1108,7 +1177,7 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 	* @param $force. TRUE to check, no matter how soon the previous check was. This can have a great impact on the experience of the admin
 	*
 	*/
-	protected function checkSDKStatus($force = false) {
+	public function checkSDKStatus($force = false) {
 		
 		//call the API at most only once every 5 minutes, not sooner
 		if(!$force && (time()-$this->getConfigValue('api_last_check')) < 5*60) 
@@ -1141,6 +1210,9 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 				
 					//save the translation
 					$this->setConfigValue('messages', $messages);
+					
+					//reset the loaded messages so that the new ones are being used
+					SyC::reloadLanguage();
 				}
 			}
 		}else{

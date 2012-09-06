@@ -174,7 +174,7 @@ class ShareYourCartTheCartPress extends ShareYourCartWordpressPlugin {
 	/**
 	 * Insert coupon in database
 	 */
-	protected function saveCoupon( $token, $coupon_code, $coupon_value, $coupon_type ) {
+	protected function saveCoupon($token, $coupon_code, $coupon_value, $coupon_type, $product_unique_ids = array()) {
 		switch($coupon_type) {
 		case 'amount':
 			$discount_type = 'amount';

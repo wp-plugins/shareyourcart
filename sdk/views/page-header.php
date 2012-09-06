@@ -1,7 +1,7 @@
 <?php if(!class_exists('ShareYourCartBase',false)) die('Access Denied'); ?>
-<link rel="stylesheet" type="text/css" href="<?php echo $this->createUrl(dirname(__FILE__).'/../css/style.css'); ?>" />
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getUrl(dirname(__FILE__).'/../css/style.css'); ?>" />
 <!--[if lt IE 9]>
-<link rel="stylesheet" href="<?php echo $this->createUrl(dirname(__FILE__).'/../css/ie.css'); ?>" type="text/css"/>
+<link rel="stylesheet" href="<?php echo $this->getUrl(dirname(__FILE__).'/../css/ie.css'); ?>" type="text/css"/>
 <![endif]-->
 
 <?php //check if there is a style outside of the SDK, and include that one as well 
@@ -12,7 +12,7 @@ $_file_ = dirname($_reflection_->getFileName())."/css/style.css";
 //check if there is a file in the specified location
 if(file_exists($_file_)):?>
 		
-<link rel="stylesheet" type="text/css" href="<?php echo $this->createUrl($_file_); ?>" />
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getUrl($_file_); ?>" />
 
 <?php endif; ?>
 

@@ -359,7 +359,7 @@ class ShareYourCartEStore extends ShareYourCartWordpressPlugin {
      * 	 Insert coupon in database
      *
      */
-	protected function saveCoupon($token, $coupon_code, $coupon_value, $coupon_type) {
+	protected function saveCoupon($token, $coupon_code, $coupon_value, $coupon_type, $product_unique_ids = array()) {
 		global $wpdb;
 		
 		switch($coupon_type)
