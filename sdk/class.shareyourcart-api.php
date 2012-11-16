@@ -508,7 +508,7 @@ class SyC
 		return $messages;
 	}
 	
-	function relativepath($from, $to, $ps = '/' ,$ds = DIRECTORY_SEPARATOR)
+	public static function relativepath($from, $to, $ps = '/' ,$ds = DIRECTORY_SEPARATOR)
 	{	
 		$arFrom = explode($ds, rtrim($from, $ds));
 		$arTo = explode($ds, rtrim($to, $ds));
@@ -526,7 +526,7 @@ class SyC
 * @param string $src
 * @return string
 */
-	function rel2Abs($rel, $base) {
+	public static function rel2Abs($rel, $base) {
 
 		/* return if already absolute URL */
 		if (parse_url($rel, PHP_URL_SCHEME) != '')
@@ -565,7 +565,7 @@ class SyC
 * @param string $src
 * @return string
 */
-	function htmlIndent($src) {
+	public static function htmlIndent($src) {
 
 		//replace all leading spaces with &nbsp;
 		//Attention: this will render wrong html if you split a tag on more lines!
@@ -576,7 +576,7 @@ class SyC
 	/**
 	* returns TRUE if haystack starts with needle
 	*/
-	function startsWith($haystack, $needle)
+	public static function startsWith($haystack, $needle)
 	{
 		$length = strlen($needle);
 		return (substr($haystack, 0, $length) === $needle);
@@ -585,7 +585,7 @@ class SyC
 	/**
 	* returns TRUE if haystack ends with needle
 	*/
-	function endsWith($haystack, $needle)
+	public static function endsWith($haystack, $needle)
 	{
 		return (substr($haystack, strlen($haystack) - strlen($needle)) === $needle);
 	}

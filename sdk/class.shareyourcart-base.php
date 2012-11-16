@@ -1142,6 +1142,9 @@ abstract class ShareYourCartBase extends ShareYourCartAPI {
 	*/
 	protected function getUrl($file){
 	
+		//if there is no file, return an empty string
+		if(empty($file)) return $file;
+	
 		//test if the files is a url, as one migt send it that way
 		$parts = parse_url($file);
 		$is_url = is_array($parts) && isset($parts['scheme']);

@@ -39,8 +39,7 @@ class ShareYourCartWooCommerce extends ShareYourCartWordpressPlugin{
       
       add_action('init', array(&$this, 'processInit'));
 	  
-	  add_action('woocommerce_simple_add_to_cart', array(&$this,'showProductButton'), 40 ); //make sure it appears AFTER the addToCart button
-	  add_action('woocommerce_after_add_to_cart_button', array(&$this,'showProductButton'));
+	  add_action('woocommerce_before_single_product', array(&$this,'showProductButton'));
       add_action('woocommerce_cart_contents', array(&$this,'showCartButton'));
 	}
 	
@@ -197,11 +196,11 @@ class ShareYourCartWooCommerce extends ShareYourCartWordpressPlugin{
 
 		//WooCommerce actually echoes the image
         ob_start();
-        $product->get_image();
+        echo $product->get_image(); //older WooCommerce versions might allready echo, but newer versions don't, so force it anyway
         $image = ob_get_clean();
 		
 		//check is image actually a HTML img entity
-		if(($doc = DomDocument::loadHTML($image)) !== FALSE)
+		if(($doc = @DomDocument::loadHTML($image)) !== FALSE)
 		{
 			$imageTags =  $doc->getElementsByTagName('img');
 			if($imageTags->length >0 )
