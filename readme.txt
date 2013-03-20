@@ -5,10 +5,10 @@ Donate link: http://www.shareyourcart.com/
 Tags: twitter, Facebook, tweet, affiliate, button, social, discount, coupon
 Requires at least: 3.0
 Tested up to: 3.3.2
-Stable tag: 1.9.6
+Stable tag: 1.11.7
 
 Increase by 10% the number of Facebook shares and Twitter tweets that your customers do about your business.
-This means ShareYourCart™ helps you get more customers by motivating satisfied customers to talk with their friends about your products. 
+This means ShareYourCartï¿½ helps you get more customers by motivating satisfied customers to talk with their friends about your products. 
 
 == Description ==
 Increase by 10% the number of Facebook shares and Twitter tweets that your customers do about your business.
@@ -55,6 +55,10 @@ And the best thing is the entire process is automatic, and it simply works.
 Thus, you can focus on further building your business, and not on generating coupon codes.
 
 == Changelog ==
+= 1.11.7 =
+* Upgrade to SDK 1.11
+* FIX WooCommerce 2.0 compatibility
+
 = 1.9.6 =
 * Fix woocommerce coupons so that they are only applied to the shared product
 
